@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "zona": "Calzada de los Jinetes, Las Arboledas, Tlalnepantla de Baz",
+    "cp": "54026",
+    "actualizado": "2026-04-17",
+    "total_negocios": 8
+  },
+  "negocios": [
+    {
+      "id": 1,
+      "nombre": "Body Trainer Gym Arboledas",
+      "tipo": "gimnasio",
+      "slug": "body-trainer-arboledas",
+      "direccion": "Calzada de los Jinetes 35, Las Arboledas, Tlalnepantla de Baz",
+      "telefono": "5532652927",
+      "whatsapp": "5532652927",
+      "instagram": "@bodytrainer_gf_arboledas",
+      "facebook": "BodytrainerGymArboledas",
+      "horarios": "Lun-Vie 5AM-11PM | Sáb-Dom 7AM-7PM | 365 días",
+      "color_primario": "#dc2626",
+      "color_secundario": "#991b1b",
+      "tiene_web": false,
+      "tiene_chatbot": false,
+      "oportunidad": "alta",
+      "servicios": [
+        {"nombre": "Visita del día", "precio": 50, "tipo": "plan", "stripe_link": ""},
+        {"nombre": "Semana", "precio": 199, "tipo": "plan", "stripe_link": ""},
+        {"nombre": "Mensual ilimitado", "precio": 699, "tipo": "plan", "destacado": true, "stripe_link": ""},
+        {"nombre": "Estudiante mensual", "precio": 599, "tipo": "plan", "stripe_link": ""}
+      ],
+      "headline": "Entrena cuando quieras, sin compromisos",
+      "subheadline": "Membresía flexible · Abierto 365 días · 5 AM a 11 PM",
+      "pain_point": "Los gyms te obligan a contratos largos y horarios rígidos",
+      "cta_principal": "Ver planes y precios",
+      "maps_embed": "https://maps.google.com/maps?q=Body+Trainer+Gym+Arboledas+Jinetes+35&output=embed",
+      "notas": "Cliente principal. Ya tenemos landing. Teléfono real confirmado."
+    },
+    {
+      "id": 2,
+      "nombre": "Smart Fit Jinetes",
+      "tipo": "gimnasio",
+      "slug": "smart-fit-jinetes",
+      "direccion": "Av. Calzada de los Jinetes 141, Las Arboledas, Tlalnepantla de Baz",
+      "telefono": "",
+      "whatsapp": "",
+      "instagram": "@smartfitmx",
+      "horarios": "Lun-Vie 6AM-11PM | Sáb-Dom 8AM-6PM",
+      "color_primario": "#16a34a",
+      "tiene_web": true,
+      "oportunidad": "baja",
+      "notas": "Cadena nacional. No es buen prospecto — tiene equipo de marketing propio."
+    },
+    {
+      "id": 3,
+      "nombre": "The Fit24 Jinetes",
+      "tipo": "gimnasio",
+      "slug": "fit24-jinetes",
+      "direccion": "Calzada Jinetes 105, Las Arboledas, Tlalnepantla de Baz",
+      "telefono": "",
+      "whatsapp": "",
+      "horarios": "24/7 todos los días",
+      "color_primario": "#2563eb",
+      "tiene_web": true,
+      "oportunidad": "media",
+      "servicios": [
+        {"nombre": "Membresía mensual", "precio": 0, "tipo": "plan", "notas": "precio no confirmado"}
+      ],
+      "notas": "Gym local. Abierto 24/7. Verificar si tiene WhatsApp propio."
+    },
+    {
+      "id": 4,
+      "nombre": "Búfalo Barbería Arboledas",
+      "tipo": "barberia",
+      "slug": "bufalo-barberia",
+      "direccion": "Calzada de los Jinetes 141 Local 5, Tlalnepantla de Baz",
+      "telefono": "",
+      "whatsapp": "",
+      "horarios": "Lun-Sáb 10AM-8PM",
+      "color_primario": "#78350f",
+      "color_secundario": "#92400e",
+      "tiene_web": false,
+      "tiene_chatbot": false,
+      "oportunidad": "alta",
+      "servicios": [
+        {"nombre": "Corte clásico", "precio": 80, "tipo": "servicio"},
+        {"nombre": "Corte + barba", "precio": 120, "tipo": "servicio"},
+        {"nombre": "Afeitado profesional", "precio": 60, "tipo": "servicio"},
+        {"nombre": "Diseño de barba", "precio": 80, "tipo": "servicio"}
+      ],
+      "headline": "Tu estilo, tu identidad. Agenda en segundos.",
+      "subheadline": "Barberos expertos · Sin esperas · Arboledas",
+      "pain_point": "Llegas al barbero y hay una hora de espera sin poder agendar antes",
+      "cta_principal": "Agendar cita ahora",
+      "notas": "Confirmado en planetamexico.com. Buena oportunidad para chatbot de citas."
+    },
+    {
+      "id": 5,
+      "nombre": "Hacienda Los Jinetes",
+      "tipo": "restaurante",
+      "slug": "hacienda-los-jinetes",
+      "direccion": "Calzada de los Jinetes 79a, Las Arboledas, Tlalnepantla de Baz",
+      "telefono": "",
+      "whatsapp": "",
+      "horarios": "Lun-Dom 12PM-10PM",
+      "color_primario": "#b45309",
+      "tiene_web": true,
+      "oportunidad": "media",
+      "servicios": [
+        {"nombre": "Reserva para comer", "precio": 0, "tipo": "reserva"},
+        {"nombre": "Menú barbacoa", "precio": 180, "tipo": "plato"},
+        {"nombre": "Orden para llevar", "precio": 0, "tipo": "pedido"}
+      ],
+      "headline": "Sabores auténticos. Reserva tu mesa ahora.",
+      "subheadline": "Barbacoa · Birria · Tlayudas · Molcajetes · Arboledas",
+      "pain_point": "Sin sistema de reservas online, se pierden clientes que llaman y no contestan",
+      "cta_principal": "Reservar mesa",
+      "notas": "Tiene presencia en reservandonos.com. Oportunidad en WhatsApp para reservas."
+    },
+    {
+      "id": 6,
+      "nombre": "Monte Café Arboledas",
+      "tipo": "cafe",
+      "slug": "monte-cafe-arboledas",
+      "direccion": "Calzada de los Jinetes 77, Las Arboledas, Tlalnepantla de Baz",
+      "telefono": "",
+      "whatsapp": "",
+      "horarios": "Lun-Dom 7AM-8PM",
+      "color_primario": "#78350f",
+      "tiene_web": false,
+      "tiene_chatbot": false,
+      "oportunidad": "alta",
+      "servicios": [
+        {"nombre": "Desayuno completo", "precio": 95, "tipo": "plato"},
+        {"nombre": "Bebida caliente", "precio": 45, "tipo": "bebida"},
+        {"nombre": "Malteada", "precio": 65, "tipo": "bebida"},
+        {"nombre": "Orden para llevar", "precio": 0, "tipo": "pedido"}
+      ],
+      "headline": "Tu café favorito. Pide antes de llegar.",
+      "subheadline": "Desayunos · Bebidas · Crepes · Arboledas",
+      "pain_point": "Sin pedidos online, los clientes no pueden ordenar antes de llegar",
+      "cta_principal": "Pedir ahora",
+      "notas": "Sin web confirmado. Buen candidato para landing + pedidos por WhatsApp."
+    },
+    {
+      "id": 7,
+      "nombre": "El Anafre Arboledas",
+      "tipo": "restaurante",
+      "slug": "el-anafre-arboledas",
+      "direccion": "Calzada de los Jinetes 35, Las Arboledas, Tlalnepantla de Baz",
+      "telefono": "",
+      "whatsapp": "",
+      "horarios": "Lun-Dom 1PM-11PM",
+      "color_primario": "#7f1d1d",
+      "tiene_web": false,
+      "tiene_chatbot": false,
+      "oportunidad": "alta",
+      "servicios": [
+        {"nombre": "Parrillada para 2", "precio": 320, "tipo": "plato"},
+        {"nombre": "Orden individual", "precio": 150, "tipo": "plato"},
+        {"nombre": "Reserva de mesa", "precio": 0, "tipo": "reserva"}
+      ],
+      "headline": "La mejor parrilla de Arboledas. Reserva tu lugar.",
+      "subheadline": "Carnes · Parrilladas · Arboledas",
+      "pain_point": "Sin reservas online, mesas vacías aunque los clientes quieren venir",
+      "cta_principal": "Reservar mesa",
+      "notas": "Sin web. Mismo edificio que Body Trainer. Fácil visitarlos en la misma visita."
+    },
+    {
+      "id": 8,
+      "nombre": "Farmacias Similares Jinetes",
+      "tipo": "farmacia",
+      "slug": "farmacias-similares-jinetes",
+      "direccion": "Calzada de los Jinetes 12, Las Arboledas, Tlalnepantla de Baz",
+      "telefono": "",
+      "horarios": "8AM-10PM",
+      "color_primario": "#dc2626",
+      "tiene_web": true,
+      "oportunidad": "baja",
+      "notas": "Cadena. No es prospecto."
+    }
+  ],
+  "por_tipo": {
+    "gimnasio": [1, 2, 3],
+    "barberia": [4],
+    "restaurante": [5, 7],
+    "cafe": [6],
+    "farmacia": [8]
+  },
+  "prospectos_prioritarios": [1, 4, 6, 7],
+  "notas_generales": "Body Trainer (id:1) es el primer cliente. El Anafre (id:7) está en el mismo edificio — doble pitch en una visita. Monte Café (id:6) y Búfalo Barbería (id:4) son fáciles de cerrar."
+}

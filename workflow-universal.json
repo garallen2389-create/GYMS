@@ -1,0 +1,366 @@
+{
+  "name": "Workflow Universal — Negocios Locales",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-universal",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "node_webhook_wa",
+      "name": "WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "notes": "Recibe mensajes de WhatsApp Business API. Path: /webhook/whatsapp-universal"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer datos del mensaje entrante\nconst body = $input.item.json;\n\n// Normalizar estructura (compatible con Meta API y Twilio)\nconst from = body.from || body.From || body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]?.from;\nconst text = body.text?.body || body.Body || body.entry?.[0]?.changes?.[0]?.value?.messages?.[0]?.text?.body || '';\nconst timestamp = body.timestamp || Date.now();\n\n// Determinar negocio por número destino\nconst to = body.to || body.To || '';\n\nreturn [{\n  json: {\n    from: from,\n    text: text.toLowerCase().trim(),\n    text_original: text.trim(),\n    to: to,\n    timestamp: timestamp,\n    session_key: `session_${from}`\n  }\n}];"
+      },
+      "id": "node_parse_message",
+      "name": "Parsear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "key": "={{ $json.session_key }}",
+        "ttl": 1800
+      },
+      "id": "node_get_session",
+      "name": "Obtener Sesión",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [640, 300],
+      "notes": "Recuperar estado actual del usuario. TTL: 30 minutos"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Determinar negocio por número de WhatsApp\nconst negociosDB = {\n  '5532652927': {\n    id: 1,\n    nombre: 'Body Trainer Gym Arboledas',\n    tipo: 'gimnasio',\n    telefono: '5532652927',\n    direccion: 'Calzada de los Jinetes 35, Las Arboledas',\n    horarios: 'Lun-Vie 5AM-11PM | Sáb-Dom 7AM-7PM | 365 días',\n    color: '#dc2626',\n    slug: 'body-trainer-arboledas',\n    servicios: [\n      { id: 1, nombre: 'Visita del día', precio: 50, stripe_link: '', emoji: '🟡' },\n      { id: 2, nombre: 'Semana', precio: 199, stripe_link: '', emoji: '🟢' },\n      { id: 3, nombre: 'Mensual ilimitado', precio: 699, stripe_link: '', emoji: '🔴', destacado: true },\n      { id: 4, nombre: 'Estudiante mensual', precio: 599, stripe_link: '', emoji: '🔵' }\n    ]\n  }\n  // Agregar más negocios aquí según se activen\n};\n\nconst to = $input.item.json.to;\nconst negocio = negociosDB[to] || negociosDB['5532652927']; // fallback\n\nconst session = $input.item.json.session || { step: 'inicio', data: {} };\n\nreturn [{\n  json: {\n    ...$input.item.json,\n    negocio: negocio,\n    session: session\n  }\n}];"
+      },
+      "id": "node_resolve_negocio",
+      "name": "Resolver Negocio + Sesión",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [840, 300]
+    },
+    {
+      "parameters": {
+        "rules": {
+          "rules": [
+            {
+              "conditions": {
+                "options": { "caseSensitive": false },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.session.step }}",
+                    "rightValue": "inicio",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "inicio"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.session.step }}",
+                    "rightValue": "seleccion_servicio",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "seleccion_servicio"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.session.step }}",
+                    "rightValue": "recopilar_datos",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "recopilar_datos"
+            },
+            {
+              "conditions": {
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.session.step }}",
+                    "rightValue": "confirmacion",
+                    "operator": { "type": "string", "operation": "equals" }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "confirmacion"
+            }
+          ]
+        }
+      },
+      "id": "node_router_step",
+      "name": "Router por Paso",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3,
+      "position": [1040, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "// PASO 1: BIENVENIDA\nconst { negocio, text } = $input.item.json;\n\n// Detectar intent del mensaje inicial\nlet skipToBienvenida = true;\nlet customMsg = null;\n\nif (text.includes('plan') || text.includes('precio') || text.includes('membresía')) {\n  skipToBienvenida = false;\n  customMsg = 'seleccion_servicio';\n}\nif (text.includes('cita') || text.includes('agendar') || text.includes('reservar')) {\n  skipToBienvenida = false;\n  customMsg = 'recopilar_datos_directo';\n}\n\nconst tipoMessages = {\n  gimnasio: '💪 ¿Quieres ver nuestros planes y precios?',\n  barberia: '✂️ ¿Quieres agendar una cita con nosotros?',\n  restaurante: '🍽️ ¿Quieres hacer un pedido o reservar mesa?',\n  cafe: '☕ ¿Quieres hacer un pedido o ver nuestro menú?',\n  consultorio: '🏥 ¿Necesitas agendar una consulta?'\n};\n\nconst mensaje = `¡Hola! 👋 Soy el asistente de *${negocio.nombre}*.\n\n${tipoMessages[negocio.tipo] || '¿En qué te puedo ayudar?'}\n\nElige una opción:\n1️⃣ Ver servicios / planes\n2️⃣ Agendar / Reservar / Pedir\n3️⃣ Horarios y ubicación\n4️⃣ Hablar con alguien del equipo`;\n\nreturn [{\n  json: {\n    ...$input.item.json,\n    mensaje_respuesta: mensaje,\n    nuevo_step: customMsg || 'seleccion_accion',\n    skip_bienvenida: !skipToBienvenida\n  }\n}];"
+      },
+      "id": "node_step_inicio",
+      "name": "Paso 1: Bienvenida",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1240, 100]
+    },
+    {
+      "parameters": {
+        "jsCode": "// PASO 2: PROCESAR SELECCIÓN DE ACCIÓN/SERVICIO\nconst { negocio, text, session } = $input.item.json;\nconst opcion = parseInt(text) || 0;\n\nlet mensaje = '';\nlet nuevo_step = 'recopilar_datos';\nlet servicio_seleccionado = null;\n\nif (session.step === 'seleccion_accion') {\n  // Menu principal\n  if (opcion === 3) {\n    // Horarios y ubicación\n    mensaje = `📍 *${negocio.nombre}*\n\n🏠 *Dirección:* ${negocio.direccion}\n\n🕐 *Horarios:*\n${negocio.horarios}\n\n📞 *Teléfono:* ${negocio.telefono}\n\n🗺️ *Google Maps:*\nhttps://maps.google.com/?q=${encodeURIComponent(negocio.direccion)}\n\n¿Necesitas algo más?\n1️⃣ Ver planes/servicios\n2️⃣ Agendar`;\n    nuevo_step = 'seleccion_accion';\n  } else if (opcion === 4) {\n    mensaje = `En un momento te conectamos con alguien del equipo 👤\n\nMientras tanto:\n📍 ${negocio.direccion}\n📞 ${negocio.telefono}\n⏰ ${negocio.horarios}`;\n    nuevo_step = 'humano';\n  } else {\n    // Opciones 1 o 2: mostrar servicios\n    const serviciosList = negocio.servicios.map((s, i) =>\n      `${s.emoji || ''} ${i + 1}. *${s.nombre}*${s.precio > 0 ? ` — $${s.precio}` : ''}${s.destacado ? ' ⭐ MÁS POPULAR' : ''}`\n    ).join('\\n');\n    mensaje = `Nuestros servicios en *${negocio.nombre}*:\\n\\n${serviciosList}\\n\\n¿Cuál te interesa? Responde con el número`;\n    nuevo_step = 'seleccion_servicio';\n  }\n} else if (session.step === 'seleccion_servicio') {\n  // Seleccionar servicio específico\n  const idx = opcion - 1;\n  if (idx >= 0 && idx < negocio.servicios.length) {\n    servicio_seleccionado = negocio.servicios[idx];\n    \n    // Datos adicionales según tipo\n    const datosPorTipo = {\n      gimnasio: '',\n      barberia: '3. *¿Qué día y hora prefieres?*\\n   (Ej: Martes 16:00, Jueves mañana)',\n      restaurante: '3. *¿Para cuántas personas?*\\n4. *¿Fecha y hora?*',\n      cafe: '3. *¿Es para recoger o comer aquí?*',\n      consultorio: '3. *Motivo de consulta (breve)*'\n    };\n    \n    mensaje = `¡Excelente elección! 👍\\n\\nPara continuar necesito tus datos:\\n\\n1. Tu *nombre completo*\\n2. Tu *número de teléfono* o email${datosPorTipo[negocio.tipo] ? '\\n' + datosPorTipo[negocio.tipo] : ''}\\n\\n_Escribe todo en un mismo mensaje o de uno en uno_`;\n    nuevo_step = 'recopilar_datos';\n  } else {\n    mensaje = `No entendí tu respuesta. Escribe el número del servicio (1, 2, 3...)`;\n    nuevo_step = 'seleccion_servicio';\n  }\n}\n\nreturn [{\n  json: {\n    ...$input.item.json,\n    mensaje_respuesta: mensaje,\n    nuevo_step: nuevo_step,\n    session: {\n      ...session,\n      servicio_seleccionado: servicio_seleccionado || session.servicio_seleccionado\n    }\n  }\n}];"
+      },
+      "id": "node_step_seleccion",
+      "name": "Paso 2: Selección",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1240, 280]
+    },
+    {
+      "parameters": {
+        "jsCode": "// PASO 3: RECOPILAR Y PARSEAR DATOS\nconst { negocio, text_original, session } = $input.item.json;\n\n// Extraer nombre y teléfono del texto libre\nconst lines = text_original.split('\\n').map(l => l.trim()).filter(Boolean);\nconst telefono_regex = /(?:\\+?52)?[0-9]{10}/;\nconst email_regex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}/;\n\nlet nombre = session.data?.nombre || null;\nlet telefono = session.data?.telefono || null;\nlet email = session.data?.email || null;\nlet info_extra = session.data?.info_extra || null;\n\nlines.forEach(line => {\n  const tel_match = line.match(telefono_regex);\n  const email_match = line.match(email_regex);\n  if (tel_match && !telefono) {\n    telefono = tel_match[0];\n  } else if (email_match && !email) {\n    email = email_match[0];\n  } else if (!nombre && line.length > 3 && line.length < 60) {\n    nombre = line.replace(/^\\d+[\\.\\-\\)\\s]+/, '').trim();\n  } else if (nombre && !info_extra) {\n    info_extra = line;\n  }\n});\n\n// Validar si tenemos suficiente información\nconst tiene_nombre = !!nombre;\nconst tiene_contacto = !!(telefono || email);\n\nlet mensaje = '';\nlet nuevo_step = '';\n\nif (tiene_nombre && tiene_contacto) {\n  // Tenemos datos suficientes → pasar a confirmación\n  const servicio = session.servicio_seleccionado;\n  const precio_txt = servicio?.precio > 0 ? ` — $${servicio.precio}` : '';\n  \n  mensaje = `✅ *Resumen de tu solicitud:*\\n\\n👤 Nombre: ${nombre}\\n📱 Contacto: ${telefono || email}${servicio ? `\\n💼 Servicio: ${servicio.nombre}${precio_txt}` : ''}${info_extra ? `\\n📋 Info extra: ${info_extra}` : ''}\\n\\n¿Todo correcto?\\n1️⃣ Sí, confirmar\\n2️⃣ Cambiar algo`;\n  nuevo_step = 'confirmacion';\n} else {\n  // Pedir los datos que faltan\n  let falta = [];\n  if (!tiene_nombre) falta.push('tu *nombre completo*');\n  if (!tiene_contacto) falta.push('tu *número de teléfono*');\n  mensaje = `Necesito ${falta.join(' y ')} para continuar. ¿Me los puedes dar?`;\n  nuevo_step = 'recopilar_datos';\n}\n\nreturn [{\n  json: {\n    ...$input.item.json,\n    mensaje_respuesta: mensaje,\n    nuevo_step: nuevo_step,\n    session: {\n      ...session,\n      data: { nombre, telefono, email, info_extra }\n    }\n  }\n}];"
+      },
+      "id": "node_step_datos",
+      "name": "Paso 3: Recopilar Datos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1240, 460]
+    },
+    {
+      "parameters": {
+        "jsCode": "// PASO 4: CONFIRMACIÓN + DECIDIR FLUJO DE PAGO\nconst { negocio, text, session } = $input.item.json;\nconst opcion = parseInt(text) || 0;\n\nif (opcion === 2) {\n  // Usuario quiere cambiar algo\n  return [{\n    json: {\n      ...$input.item.json,\n      mensaje_respuesta: '¿Qué quieres cambiar?\\n\\n1️⃣ El servicio/plan\\n2️⃣ Mis datos personales\\n3️⃣ Fecha/hora',\n      nuevo_step: 'seleccion_accion'\n    }\n  }];\n}\n\n// Confirmar → ¿requiere pago?\nconst servicio = session.servicio_seleccionado;\nconst requiere_pago = servicio?.precio > 0 && servicio?.stripe_link;\n\nconst folio = `${negocio.id}-${Date.now().toString(36).toUpperCase()}`;\n\nlet mensaje = '';\nlet nuevo_step = 'finalizado';\n\nif (requiere_pago) {\n  mensaje = `💳 *Para completar tu registro:*\\n\\nHaz clic para pagar de forma segura:\\n🔗 ${servicio.stripe_link}\\n\\nAceptamos: Visa, Mastercard, OXXO, SPEI\\n\n⚠️ Tu lugar queda reservado *15 minutos*\\n\\nFolio: #${folio}\\n\\n¿Problemas con el pago? Escríbenos o llama al ${negocio.telefono}`;\n  nuevo_step = 'esperando_pago';\n} else {\n  // Sin pago — confirmar directamente\n  const { nombre } = session.data;\n  mensaje = `✅ *¡${nombre}, tu solicitud está confirmada!*\\n\\n📍 ${negocio.nombre}\\n🏠 ${negocio.direccion}\\n${session.data.info_extra ? `📅 ${session.data.info_extra}` : `⏰ ${negocio.horarios}`}\\n\\nFolio: #${folio}\\n\\nTe esperamos. ¡Gracias! 🙏`;\n  nuevo_step = 'finalizado';\n}\n\nreturn [{\n  json: {\n    ...$input.item.json,\n    mensaje_respuesta: mensaje,\n    nuevo_step: nuevo_step,\n    folio: folio,\n    requiere_pago: requiere_pago\n  }\n}];"
+      },
+      "id": "node_step_confirmacion",
+      "name": "Paso 4: Confirmación + Pago",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1240, 640]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Preparar fila para Google Sheets\nconst { negocio, session, folio, from } = $input.item.json;\nconst { nombre, telefono, email, info_extra } = session.data || {};\nconst servicio = session.servicio_seleccionado;\n\nconst now = new Date().toISOString().split('T')[0];\n\nreturn [{\n  json: {\n    id: folio || `${negocio.id}-${Date.now().toString(36)}`,\n    negocio_id: negocio.id,\n    negocio_nombre: negocio.nombre,\n    negocio_tipo: negocio.tipo,\n    usuario_nombre: nombre || 'Sin nombre',\n    usuario_telefono: telefono || from,\n    usuario_email: email || '',\n    accion: servicio ? 'solicitud_servicio' : 'consulta',\n    servicio: servicio?.nombre || 'Consulta general',\n    monto: servicio?.precio || 0,\n    stripe_id: '',\n    estado: servicio?.precio > 0 ? 'pendiente_pago' : 'confirmado',\n    fecha: now,\n    fecha_visita: info_extra || now,\n    calificacion: '',\n    notas: info_extra || '',\n    follow_up_enviado: false\n  }\n}];"
+      },
+      "id": "node_prepare_sheets",
+      "name": "Preparar Google Sheets Row",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1480, 460]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": { "__rl": true, "value": "{{GOOGLE_SHEETS_ID}}", "mode": "id" },
+        "sheetName": { "__rl": true, "value": "transacciones", "mode": "name" },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "matchingColumns": []
+        },
+        "options": {}
+      },
+      "id": "node_sheets_append",
+      "name": "Guardar en Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [1680, 460]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Enviar mensaje de WhatsApp via HTTP Request\nconst { negocio, from, mensaje_respuesta, nuevo_step, session } = $input.item.json;\n\nreturn [{\n  json: {\n    to: from,\n    message: mensaje_respuesta,\n    negocio_telefono: negocio.telefono,\n    session_update: {\n      step: nuevo_step,\n      data: session?.data || {},\n      servicio_seleccionado: session?.servicio_seleccionado || null,\n      timestamp: Date.now()\n    }\n  }\n}];"
+      },
+      "id": "node_prepare_response",
+      "name": "Preparar Respuesta WA",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1480, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v18.0/{{WA_PHONE_NUMBER_ID}}/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer {{WA_TOKEN}}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "body": {
+          "messaging_product": "whatsapp",
+          "to": "={{ $json.to }}",
+          "type": "text",
+          "text": { "body": "={{ $json.message }}" }
+        }
+      },
+      "id": "node_send_wa",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1680, 300]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "={{ $json.session_key || 'session_' + $json.to }}",
+        "value": "={{ JSON.stringify($json.session_update) }}",
+        "ttl": 1800
+      },
+      "id": "node_save_session",
+      "name": "Guardar Sesión",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [1880, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stripe-webhook",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "node_stripe_webhook",
+      "name": "Stripe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 600],
+      "notes": "Recibe eventos de Stripe: payment_intent.succeeded, checkout.session.completed"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesar evento Stripe\nconst event = $input.item.json;\nconst eventType = event.type;\n\nif (eventType === 'checkout.session.completed' || eventType === 'payment_intent.succeeded') {\n  const session = event.data?.object;\n  const metadata = session?.metadata || {};\n  \n  return [{\n    json: {\n      pago_ok: true,\n      stripe_id: session.id,\n      amount: session.amount_total / 100,\n      negocio_id: metadata.negocio_id,\n      usuario_telefono: metadata.usuario_telefono || session.customer_details?.phone,\n      usuario_nombre: metadata.usuario_nombre || session.customer_details?.name,\n      event_type: eventType\n    }\n  }];\n} else if (eventType === 'payment_intent.payment_failed') {\n  return [{\n    json: {\n      pago_ok: false,\n      usuario_telefono: event.data?.object?.metadata?.usuario_telefono,\n      negocio_id: event.data?.object?.metadata?.negocio_id,\n      event_type: eventType\n    }\n  }];\n}\n\nreturn [{ json: { event_type: eventType, skip: true } }];"
+      },
+      "id": "node_process_stripe",
+      "name": "Procesar Stripe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 600]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{ "triggerAtHour": 10, "triggerAtMinute": 0 }]
+        }
+      },
+      "id": "node_cron_followup",
+      "name": "Cron Follow-up (10 AM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 800]
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "getAll",
+        "documentId": { "__rl": true, "value": "{{GOOGLE_SHEETS_ID}}", "mode": "id" },
+        "sheetName": { "__rl": true, "value": "transacciones", "mode": "name" },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "follow_up_enviado",
+              "keyValue": "false"
+            },
+            {
+              "keyName": "estado",
+              "keyValue": "confirmado"
+            }
+          ]
+        },
+        "options": { "returnAllMatches": true }
+      },
+      "id": "node_sheets_followup_query",
+      "name": "Query Follow-ups Pendientes",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [440, 800]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Para cada fila, verificar si fue ayer\nconst row = $input.item.json;\nconst hoy = new Date();\nconst ayer = new Date(hoy);\nayer.setDate(ayer.getDate() - 2); // 48h después\n\nconst fecha_row = new Date(row.fecha || row.fecha_visita);\nconst diff_hrs = (hoy - fecha_row) / (1000 * 60 * 60);\n\nif (diff_hrs >= 24 && diff_hrs <= 72 && row.usuario_telefono) {\n  return [{\n    json: {\n      ...row,\n      enviar_followup: true,\n      mensaje_followup: `¡Hola ${row.usuario_nombre || 'amig@'}! 👋\\n\\n¿Cómo estuvo tu experiencia en *${row.negocio_nombre}*?\\n\\nCalifica del 1 al 5:\\n1️⃣ Muy malo\\n2️⃣ Malo\\n3️⃣ Regular\\n4️⃣ Bueno\\n5️⃣ Excelente ⭐\\n\\nTu opinión nos ayuda mucho 🙏`\n    }\n  }];\n}\n\nreturn [{ json: { enviar_followup: false } }];"
+      },
+      "id": "node_filter_followup",
+      "name": "Filtrar Follow-ups 48h",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 800]
+    }
+  ],
+  "connections": {
+    "WhatsApp Webhook": { "main": [[{ "node": "Parsear Mensaje", "type": "main", "index": 0 }]] },
+    "Parsear Mensaje": { "main": [[{ "node": "Obtener Sesión", "type": "main", "index": 0 }]] },
+    "Obtener Sesión": { "main": [[{ "node": "Resolver Negocio + Sesión", "type": "main", "index": 0 }]] },
+    "Resolver Negocio + Sesión": { "main": [[{ "node": "Router por Paso", "type": "main", "index": 0 }]] },
+    "Router por Paso": {
+      "main": [
+        [{ "node": "Paso 1: Bienvenida", "type": "main", "index": 0 }],
+        [{ "node": "Paso 2: Selección", "type": "main", "index": 0 }],
+        [{ "node": "Paso 3: Recopilar Datos", "type": "main", "index": 0 }],
+        [{ "node": "Paso 4: Confirmación + Pago", "type": "main", "index": 0 }]
+      ]
+    },
+    "Paso 1: Bienvenida": { "main": [[{ "node": "Preparar Respuesta WA", "type": "main", "index": 0 }]] },
+    "Paso 2: Selección": { "main": [[{ "node": "Preparar Respuesta WA", "type": "main", "index": 0 }]] },
+    "Paso 3: Recopilar Datos": {
+      "main": [[
+        { "node": "Preparar Respuesta WA", "type": "main", "index": 0 },
+        { "node": "Preparar Google Sheets Row", "type": "main", "index": 0 }
+      ]]
+    },
+    "Paso 4: Confirmación + Pago": {
+      "main": [[
+        { "node": "Preparar Respuesta WA", "type": "main", "index": 0 },
+        { "node": "Preparar Google Sheets Row", "type": "main", "index": 0 }
+      ]]
+    },
+    "Preparar Google Sheets Row": { "main": [[{ "node": "Guardar en Google Sheets", "type": "main", "index": 0 }]] },
+    "Preparar Respuesta WA": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] },
+    "Enviar WhatsApp": { "main": [[{ "node": "Guardar Sesión", "type": "main", "index": 0 }]] },
+    "Stripe Webhook": { "main": [[{ "node": "Procesar Stripe", "type": "main", "index": 0 }]] },
+    "Cron Follow-up (10 AM)": { "main": [[{ "node": "Query Follow-ups Pendientes", "type": "main", "index": 0 }]] },
+    "Query Follow-ups Pendientes": { "main": [[{ "node": "Filtrar Follow-ups 48h", "type": "main", "index": 0 }]] }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveManualExecutions": true,
+    "callerPolicy": "workflowsFromSameOwner",
+    "errorWorkflow": ""
+  },
+  "staticData": null,
+  "tags": ["universal", "whatsapp", "negocios-locales"],
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "n8n-bkto.srv1511719.hstgr.cloud"
+  },
+  "_readme": {
+    "description": "Workflow universal para todos los negocios locales",
+    "n8n_url": "https://n8n-bkto.srv1511719.hstgr.cloud/",
+    "variables_required": [
+      "GOOGLE_SHEETS_ID — ID de la hoja de Google Sheets",
+      "WA_PHONE_NUMBER_ID — ID del número de WhatsApp Business",
+      "WA_TOKEN — Token de acceso Meta API"
+    ],
+    "redis_required": "Para manejar sesiones de conversación (TTL 30 min)",
+    "agregar_negocio": "Añadir al objeto negociosDB en nodo 'Resolver Negocio + Sesión'"
+  }
+}
