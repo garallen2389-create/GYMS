@@ -24,3 +24,11 @@ https://github.com/garallen2389-create/GYMS
 | Stripe pagos | https://n8n-bkto.srv1511719.hstgr.cloud/webhook/stripe-webhook |
 | Workflow ID | VZa18GRUkNmAvVnQ |
 | N8N URL | https://n8n-bkto.srv1511719.hstgr.cloud/workflow/VZa18GRUkNmAvVnQ |
+
+## Chatbots Individuales por Negocio (ACTIVOS)
+| Negocio | Workflow ID | Webhook |
+|---------|------------|---------|
+| Body Trainer Gym | QJpudCMTiYFWGnOQ | /webhook/body-trainer |
+| Búfalo Barbería | xntqHnwEcVBdPa3h | /webhook/bufalo-barberia |
+| Monte Café | jKDMRpVJE4seNulz | /webhook/monte-cafe |
+| El Anafre | eB3O0GZhYcYlsilI | /webhook/el-anafre |
