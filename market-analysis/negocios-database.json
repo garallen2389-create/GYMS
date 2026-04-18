@@ -2,8 +2,10 @@
   "meta": {
     "zona": "Calzada de los Jinetes, Las Arboledas, Tlalnepantla de Baz",
     "cp": "54026",
-    "actualizado": "2026-04-17",
-    "total_negocios": 8
+    "actualizado": "2026-04-18",
+    "total_negocios": 8,
+    "github_pages": "https://garallen2389-create.github.io/GYMS/",
+    "repo": "https://github.com/garallen2389-create/GYMS"
   },
   "negocios": [
     {
@@ -33,7 +35,9 @@
       "pain_point": "Los gyms te obligan a contratos largos y horarios rígidos",
       "cta_principal": "Ver planes y precios",
       "maps_embed": "https://maps.google.com/maps?q=Body+Trainer+Gym+Arboledas+Jinetes+35&output=embed",
-      "notas": "Cliente principal. Ya tenemos landing. Teléfono real confirmado."
+      "landing_url": "https://garallen2389-create.github.io/GYMS/generated/body-trainer-arboledas.html",
+      "tiene_web": true,
+      "notas": "Cliente principal. Landing en vivo en GitHub Pages. Teléfono real confirmado."
     },
     {
       "id": 2,
@@ -91,7 +95,8 @@
       "subheadline": "Barberos expertos · Sin esperas · Arboledas",
       "pain_point": "Llegas al barbero y hay una hora de espera sin poder agendar antes",
       "cta_principal": "Agendar cita ahora",
-      "notas": "Confirmado en planetamexico.com. Buena oportunidad para chatbot de citas."
+      "landing_url": "https://garallen2389-create.github.io/GYMS/generated/bufalo-barberia.html",
+      "notas": "Confirmado en planetamexico.com. Landing en vivo. Buena oportunidad para chatbot de citas."
     },
     {
       "id": 5,
@@ -139,7 +144,9 @@
       "subheadline": "Desayunos · Bebidas · Crepes · Arboledas",
       "pain_point": "Sin pedidos online, los clientes no pueden ordenar antes de llegar",
       "cta_principal": "Pedir ahora",
-      "notas": "Sin web confirmado. Buen candidato para landing + pedidos por WhatsApp."
+      "landing_url": "https://garallen2389-create.github.io/GYMS/generated/monte-cafe-arboledas.html",
+      "tiene_web": true,
+      "notas": "Landing en vivo. Buen candidato para pedidos por WhatsApp."
     },
     {
       "id": 7,
@@ -163,7 +170,9 @@
       "subheadline": "Carnes · Parrilladas · Arboledas",
       "pain_point": "Sin reservas online, mesas vacías aunque los clientes quieren venir",
       "cta_principal": "Reservar mesa",
-      "notas": "Sin web. Mismo edificio que Body Trainer. Fácil visitarlos en la misma visita."
+      "landing_url": "https://garallen2389-create.github.io/GYMS/generated/el-anafre-arboledas.html",
+      "tiene_web": true,
+      "notas": "Landing en vivo. Mismo edificio que Body Trainer. Pitch doble en una visita."
     },
     {
       "id": 8,
