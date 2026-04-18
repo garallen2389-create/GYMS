@@ -1,0 +1,18 @@
+# 🌐 URLs EN VIVO
+
+## Portal
+https://garallen2389-create.github.io/GYMS/
+
+## Landings Personalizadas
+| Negocio | URL |
+|---------|-----|
+| Body Trainer Gym | https://garallen2389-create.github.io/GYMS/generated/body-trainer-arboledas.html |
+| Búfalo Barbería | https://garallen2389-create.github.io/GYMS/generated/bufalo-barberia.html |
+| Monte Café | https://garallen2389-create.github.io/GYMS/generated/monte-cafe-arboledas.html |
+| El Anafre | https://garallen2389-create.github.io/GYMS/generated/el-anafre-arboledas.html |
+
+## Para mostrar al cliente (short links recomendados)
+Usar bit.ly o tinyurl para acortar las URLs antes de la visita.
+
+## Repo
+https://github.com/garallen2389-create/GYMS
