@@ -16,3 +16,11 @@ Usar bit.ly o tinyurl para acortar las URLs antes de la visita.
 
 ## Repo
 https://github.com/garallen2389-create/GYMS
+
+## N8N Webhooks (ACTIVOS)
+| Webhook | URL |
+|---------|-----|
+| WhatsApp entrante | https://n8n-bkto.srv1511719.hstgr.cloud/webhook/whatsapp-universal |
+| Stripe pagos | https://n8n-bkto.srv1511719.hstgr.cloud/webhook/stripe-webhook |
+| Workflow ID | VZa18GRUkNmAvVnQ |
+| N8N URL | https://n8n-bkto.srv1511719.hstgr.cloud/workflow/VZa18GRUkNmAvVnQ |
