@@ -1,0 +1,67 @@
+{
+  "name": "Chatbot — El Anafre Arboledas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "el-anafre",
+        "webhookId": "40f7e116-14ff-42c3-89f4-2f5bd54d4006",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh_ea",
+      "name": "WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json;\nconst entry = body.entry?.[0];\nconst change = entry?.changes?.[0];\nconst message = change?.value?.messages?.[0];\nlet from, text;\nif (message) {\n  from = message.from;\n  text = (message.text?.body || '').toLowerCase().trim();\n} else {\n  from = body.from || body.From || '';\n  text = (body.text?.body || body.Body || '').toLowerCase().trim();\n}\nreturn [{ json: { from, text, timestamp: Date.now() } }];"
+      },
+      "id": "parse_ea",
+      "name": "Parsear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { from, text } = $input.item.json;\n\nconst MENU = `🔥 *EL ANAFRE ARBOLEDAS*\\n\\n¡Bienvenido! ¿Qué necesitas?\\n\\n1️⃣ Ver menú y precios\\n2️⃣ Reservar mesa\\n3️⃣ Hacer pedido\\n4️⃣ Horarios y ubicación\\n\\n_Responde con el número_`;\n\nconst MENU_ITEMS = `🔥 *MENÚ EL ANAFRE*\\n\\n🥩 Parrillada para 2 — *$320*\\n   Carnes variadas + tortillas\\n\\n🍖 Orden individual — *$150*\\n   Carne a tu gusto\\n\\n📦 Para llevar — *Disponible*\\n   Igual de delicioso\\n\\n👉 _Para pedir o reservar:_\\nhttps://wa.me/525532652927`;\n\nconst RESERVAR = `🪑 *RESERVAR MESA EN EL ANAFRE*\\n\\nEscríbenos tu reserva:\\n👉 https://wa.me/525532652927\\n\\n_Dinos:_\\n📅 Qué día quieres\\n⏰ Qué hora\\n👥 Cuántas personas\\n\\n⚡ _Te confirmamos en minutos_`;\n\nconst PEDIR = `📦 *HACER PEDIDO EN EL ANAFRE*\\n\\nEscríbenos qué quieres:\\n👉 https://wa.me/525532652927\\n\\n_Dinos:_\\n🥩 Qué pedir\\n📍 Para llevar o aquí\\n📞 Tu teléfono\\n\\n🚚 _Enviamos a tu casa en Arboledas_`;\n\nconst HORARIOS = `⏰ *HORARIOS EL ANAFRE*\\n\\n🗓️ Lunes a Domingo: *1PM — 11PM*\\n\\n✅ Abierto todos los días\\n\\n📍 Calzada de los Jinetes 35\\nLas Arboledas\\n\\n_La mejor parrilla de Arboledas_ 🔥`;\n\nconst saludos = ['hola','hi','hello','buenas','buenos','buen','inicio','menu','start','0'];\nlet msg;\nif (saludos.some(s => text.startsWith(s)) || text === '') {\n  msg = MENU;\n} else if (text === '1' || text.includes('menu') || text.includes('menú') || text.includes('precio') || text.includes('carne')) {\n  msg = MENU_ITEMS;\n} else if (text === '2' || text.includes('reserv') || text.includes('mesa')) {\n  msg = RESERVAR;\n} else if (text === '3' || text.includes('pedir') || text.includes('orden') || text.includes('pedido') || text.includes('llevar')) {\n  msg = PEDIR;\n} else if (text === '4' || text.includes('horario') || text.includes('ubicac') || text.includes('direcc') || text.includes('donde')) {\n  msg = HORARIOS;\n} else if (text.includes('parrillada') || text.includes('parrilla') || text.includes('asado')) {\n  msg = MENU_ITEMS;\n} else {\n  msg = MENU;\n}\n\nreturn [{ json: { from, mensaje_respuesta: msg } }];"
+      },
+      "id": "logic_ea",
+      "name": "Lógica Chatbot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true",
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $json.from, type: 'text', text: { body: $json.mensaje_respuesta } }) }}"
+      },
+      "id": "send_ea",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [840, 300]
+    }
+  ],
+  "connections": {
+    "WhatsApp Webhook": { "main": [[{ "node": "Parsear Mensaje", "type": "main", "index": 0 }]] },
+    "Parsear Mensaje": { "main": [[{ "node": "Lógica Chatbot", "type": "main", "index": 0 }]] },
+    "Lógica Chatbot": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "saveManualExecutions": true }
+}

@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BODYTRAINER GYM Arboledas — Gimnasio Premium sin Compromisos</title>
+    <meta name="description" content="Acceso flexible 365 días, 5AM-11PM. Sin contratos forzados. Paga solo lo que usas. Descubre planes desde $50.">
+    <meta name="keywords" content="gimnasio Arboledas, membresía flexible, acceso 24/7, gym sin contrato, entrenamiento">
+    <meta property="og:title" content="BODYTRAINER GYM Arboledas — Acceso Flexible 365 Días">
+    <meta property="og:description" content="Entrena cuando quieras. Paga solo lo que usas. Membresía flexible sin compromisos.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&h=630&fit=crop">
+    <meta property="og:url" content="https://garallen2389-create.github.io/GYMS/generated/body-trainer-premium.html">
+    <link rel="canonical" href="https://garallen2389-create.github.io/GYMS/generated/body-trainer-premium.html">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .heading { font-family: 'Bebas Neue', cursive; letter-spacing: 0.05em; font-weight: 700; }
+        :root {
+            --primary: #e62020;
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --accent: #e62020;
+            --dark: #1a1a1a;
+            --card: #111111;
+        }
+        body { background-color: var(--bg); color: var(--text); }
+        .accent-primary { color: var(--primary); }
+        .bg-card { background-color: var(--card); }
+        .hero-gradient {
+            background: linear-gradient(135deg, rgba(230, 32, 32, 0.15) 0%, transparent 100%);
+        }
+        .text-gradient {
+            background: linear-gradient(to right, #e62020, #ff4444);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+        }
+        .btn-primary:hover {
+            background-color: #cc1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(230, 32, 32, 0.3);
+        }
+        .btn-secondary {
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes glowPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(230, 32, 32, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(230, 32, 32, 0.6); }
+        }
+        .animate-in { animation: fadeInUp 0.8s ease-out forwards; }
+        .glow-pulse { animation: glowPulse 3s ease-in-out infinite; }
+        .card-hover { transition: all 0.3s ease; }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(230, 32, 32, 0.2);
+        }
+        .nav-scroll {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(230, 32, 32, 0.2);
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25d366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+        }
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.4);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        .pricing-card.featured {
+            border: 3px solid var(--primary);
+            box-shadow: 0 0 40px rgba(230, 32, 32, 0.3), inset 0 0 40px rgba(230, 32, 32, 0.1);
+            transform: scale(1.05);
+        }
+        .badge { display: inline-block; background-color: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- Navbar -->
+    <nav class="nav-scroll">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="heading text-2xl">💪 BODYTRAINER</h1>
+            <div class="hidden sm:flex gap-6 text-sm">
+                <a href="#planes" class="hover:text-red-500 transition">Planes</a>
+                <a href="#ubicacion" class="hover:text-red-500 transition">Ubicación</a>
+                <a href="#faq" class="hover:text-red-500 transition">FAQ</a>
+            </div>
+            <a href="https://wa.me/525532652927?text=Hola%20quiero%20conocer%20m%C3%A1s%20sobre%20Body%20Trainer" class="btn-primary px-6 py-2 rounded text-sm">
+                Contactar
+            </a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center px-4 pt-20 hero-gradient overflow-hidden">
+        <div class="absolute inset-0 opacity-20">
+            <div class="absolute top-10 left-10 w-80 h-80 bg-red-600 rounded-full blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-80 h-80 bg-red-600 rounded-full blur-3xl"></div>
+        </div>
+
+        <div class="max-w-4xl relative z-10 text-center">
+            <div class="badge mx-auto">🏋️ Acceso 365 días</div>
+
+            <!-- PAS Framework: Problem -->
+            <h1 class="heading text-6xl md:text-8xl leading-tight mb-6 animate-in">
+                Los Gyms Te Obligan
+                <span class="text-gradient">Sin Compromiso</span>
+            </h1>
+
+            <!-- PAS Framework: Agitate -->
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-in" style="animation-delay: 0.2s">
+                Pierdes dinero en membresías que no usas. Tu tiempo es flexible, ¿por qué tu gym no? Cancela cuando quieras, usa solo lo que pagues.
+            </p>
+
+            <!-- PAS Framework: Solution -->
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8 animate-in" style="animation-delay: 0.4s">
+                <a href="#planes" class="btn-primary px-8 py-4 rounded-lg text-lg">
+                    Ver Planes →
+                </a>
+                <a href="https://wa.me/525532652927?text=Quiero%20conocer%20Body%20Trainer" class="btn-secondary px-8 py-4 rounded-lg text-lg">
+                    Escribir por WhatsApp
+                </a>
+            </div>
+
+            <p class="text-sm text-gray-500">Sin tarjeta de crédito • Primer día gratis • Cancela sin preguntas</p>
+        </div>
+
+        <!-- Hero Image -->
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&h=600&fit=crop" alt="BODYTRAINER GYM Arboledas" class="absolute bottom-0 right-0 w-1/2 h-auto opacity-30 hidden lg:block" loading="lazy">
+    </section>
+
+    <!-- Horarios Banner (Accent) -->
+    <section class="bg-red-600 py-6 text-white text-center">
+        <h3 class="heading text-3xl mb-2">⏰ Abierto 365 Días del Año</h3>
+        <p class="text-lg">Lun-Vie: 5AM - 11PM | Sáb-Dom: 7AM - 7PM</p>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="heading text-6xl mb-4">Lo Que Incluye</h2>
+            <p class="text-gray-300 text-xl">Todo lo que necesitas para entrenar como nunca</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div class="feature-icon"><i class="fas fa-dumbbell"></i></div>
+                <h3 class="heading text-2xl mb-3">Pesas</h3>
+                <p class="text-gray-400">Equipo moderno y completo para todos los niveles</p>
+            </div>
+
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div class="feature-icon"><i class="fas fa-person-running"></i></div>
+                <h3 class="heading text-2xl mb-3">Cardio</h3>
+                <p class="text-gray-400">Máquinas de última generación con pantallas inteligentes</p>
+            </div>
+
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div class="feature-icon"><i class="fas fa-user-tie"></i></div>
+                <h3 class="heading text-2xl mb-3">Entrenadores</h3>
+                <p class="text-gray-400">Expertos certificados disponibles para ayudarte</p>
+            </div>
+
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div class="feature-icon"><i class="fas fa-shower"></i></div>
+                <h3 class="heading text-2xl mb-3">Regaderas</h3>
+                <p class="text-gray-400">Baños limpios y modernos con productos de calidad</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="planes" class="py-24 px-4 bg-card max-w-6xl mx-auto rounded-3xl">
+        <div class="text-center mb-16">
+            <h2 class="heading text-6xl mb-4">Nuestros Planes</h2>
+            <p class="text-gray-300 text-xl">Elige el que se ajuste a tu ritmo</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Plan 1: Visita -->
+            <div class="bg-gradient-to-br from-gray-900 to-gray-950 p-8 rounded-2xl border border-gray-800 pricing-card card-hover">
+                <div class="badge">Puntual</div>
+                <h3 class="heading text-3xl mb-2">Visita</h3>
+                <p class="text-gray-400 mb-6">1 día completo</p>
+                <p class="text-5xl font-bold mb-8">$<span class="text-red-500">50</span></p>
+                <ul class="space-y-3 mb-8 text-sm">
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Acceso 24 horas</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Todos los equipos</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Baños incluidos</li>
+                </ul>
+                <a href="https://wa.me/525532652927?text=Quiero%20una%20visita%20de%20un%20dia%20en%20Body%20Trainer" class="btn-secondary w-full py-3 rounded-lg block text-center">
+                    Agendar Visita
+                </a>
+            </div>
+
+            <!-- Plan 2: Semana -->
+            <div class="bg-gradient-to-br from-gray-900 to-gray-950 p-8 rounded-2xl border border-gray-800 pricing-card card-hover">
+                <div class="badge">Popular</div>
+                <h3 class="heading text-3xl mb-2">Semana</h3>
+                <p class="text-gray-400 mb-6">7 días continuos</p>
+                <p class="text-5xl font-bold mb-8">$<span class="text-red-500">199</span></p>
+                <ul class="space-y-3 mb-8 text-sm">
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> 7 días ilimitado</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Acceso 5AM-11PM</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Todos los servicios</li>
+                </ul>
+                <a href="https://wa.me/525532652927?text=Quiero%20contratar%20el%20plan%20de%20una%20semana" class="btn-secondary w-full py-3 rounded-lg block text-center">
+                    Comprar Semana
+                </a>
+            </div>
+
+            <!-- Plan 3: Mensual (FEATURED) -->
+            <div class="bg-gradient-to-br from-red-950 to-gray-950 p-8 rounded-2xl pricing-card featured card-hover lg:col-span-1">
+                <div class="badge bg-red-500">⭐ Mejor Opción</div>
+                <h3 class="heading text-3xl mb-2">Mensual</h3>
+                <p class="text-gray-300 mb-6">Acceso ilimitado</p>
+                <p class="text-6xl font-bold mb-8">$<span class="text-red-500">699</span><span class="text-xs text-gray-400">/mes</span></p>
+                <ul class="space-y-3 mb-8 text-sm">
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Acceso ilimitado</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> 30 días completos</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> 1 asesoría gratis</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Cancela cuando quieras</li>
+                </ul>
+                <a href="https://wa.me/525532652927?text=Quiero%20contratar%20el%20plan%20mensual%20ilimitado" class="btn-primary w-full py-3 rounded-lg block text-center font-bold">
+                    Comenzar Ahora
+                </a>
+            </div>
+
+            <!-- Plan 4: Estudiante -->
+            <div class="bg-gradient-to-br from-gray-900 to-gray-950 p-8 rounded-2xl border border-gray-800 pricing-card card-hover">
+                <div class="badge">Estudiantes</div>
+                <h3 class="heading text-3xl mb-2">Estudiante</h3>
+                <p class="text-gray-400 mb-6">Con credencial vigente</p>
+                <p class="text-5xl font-bold mb-8">$<span class="text-red-500">599</span><span class="text-xs text-gray-400">/mes</span></p>
+                <ul class="space-y-3 mb-8 text-sm">
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Acceso ilimitado</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Descuento especial</li>
+                    <li class="flex items-center gap-3"><i class="fas fa-check text-red-500"></i> Válido 12 meses</li>
+                </ul>
+                <a href="https://wa.me/525532652927?text=Quiero%20el%20plan%20de%20estudiante" class="btn-secondary w-full py-3 rounded-lg block text-center">
+                    Solicitar Acceso
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+        <div class="text-center mb-16">
+            <h2 class="heading text-6xl mb-4">Lo Que Dicen Nuestros Clientes</h2>
+            <p class="text-gray-300 text-xl">Histórias reales de gente real</p>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6 italic">"Finalmente un gym que se adapta a mi horario. Trabajo turnos y necesitaba flexibilidad. Aquí es perfecto."</p>
+                <p class="font-bold">Carlos Mendoza</p>
+                <p class="text-red-500 text-sm">Miembro desde hace 8 meses</p>
+            </div>
+
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6 italic">"Los entrenadores son excelentes y el gym está siempre limpio. Muy buen precio comparado con otras opciones."</p>
+                <p class="font-bold">Ana Rodríguez</p>
+                <p class="text-red-500 text-sm">Miembro desde hace 1 año</p>
+            </div>
+
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6 italic">"Sin contratos engañosos. Sin sorpresas. Puedo ir cuando quiera. Esto es lo que buscaba."</p>
+                <p class="font-bold">Miguel Torres</p>
+                <p class="text-red-500 text-sm">Miembro desde hace 3 meses</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-24 px-4 max-w-4xl mx-auto">
+        <h2 class="heading text-6xl mb-16 text-center">Preguntas Frecuentes</h2>
+
+        <div class="space-y-4">
+            <details class="bg-card p-6 rounded-lg border border-gray-800 cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-lg">
+                    ¿Puedo cancelar mi membresía cuando quiera?
+                    <span class="text-red-500 group-open:rotate-180 transition">▼</span>
+                </summary>
+                <p class="text-gray-400 mt-4">Sí, sin preguntas. Sin penalizaciones. Puedes cancelar cuando lo necesites. Solo necesitas avisarnos con 3 días de anticipación.</p>
+            </details>
+
+            <details class="bg-card p-6 rounded-lg border border-gray-800 cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-lg">
+                    ¿Qué hago si necesito ayuda con los equipos?
+                    <span class="text-red-500 group-open:rotate-180 transition">▼</span>
+                </summary>
+                <p class="text-gray-400 mt-4">Nuestros entrenadores están disponibles durante el horario para ayudarte con técnica y crear un programa personalizado. Puedes agendar una asesoría sin costo.</p>
+            </details>
+
+            <details class="bg-card p-6 rounded-lg border border-gray-800 cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-lg">
+                    ¿Hay estacionamiento disponible?
+                    <span class="text-red-500 group-open:rotate-180 transition">▼</span>
+                </summary>
+                <p class="text-gray-400 mt-4">Sí, tenemos 40 espacios de estacionamiento gratuito disponible para nuestros miembros.</p>
+            </details>
+
+            <details class="bg-card p-6 rounded-lg border border-gray-800 cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-lg">
+                    ¿Puedo congelar mi membresía?
+                    <span class="text-red-500 group-open:rotate-180 transition">▼</span>
+                </summary>
+                <p class="text-gray-400 mt-4">Sí, puedes congelar por hasta 3 meses sin costo. Ideal si viajas o necesitas un descanso temporal.</p>
+            </details>
+
+            <details class="bg-card p-6 rounded-lg border border-gray-800 cursor-pointer group">
+                <summary class="flex justify-between items-center font-bold text-lg">
+                    ¿Aceptan todas las formas de pago?
+                    <span class="text-red-500 group-open:rotate-180 transition">▼</span>
+                </summary>
+                <p class="text-gray-400 mt-4">Aceptamos tarjetas de crédito, débito, transferencias bancarias y efectivo. Puedes pagar mensualmente o por adelantado.</p>
+            </details>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="ubicacion" class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-12 text-center">¿Dónde Estamos?</h2>
+
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h3 class="heading text-3xl mb-6">BODYTRAINER GYM Arboledas</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-map-marker-alt text-red-500 mr-3"></i>
+                    Calzada de los Jinetes 35, Las Arboledas, Tlalnepantla de Baz
+                </p>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-phone text-red-500 mr-3"></i>
+                    <a href="tel:5532652927" class="hover:text-red-500">55 3265-2927</a>
+                </p>
+                <p class="text-gray-300 text-lg mb-8">
+                    <i class="fas fa-clock text-red-500 mr-3"></i>
+                    Lun-Vie: 5AM - 11PM | Sáb-Dom: 7AM - 7PM
+                </p>
+                <a href="https://maps.google.com/?q=Body+Trainer+Gym+Arboledas+Jinetes+35" target="_blank" class="btn-primary px-6 py-3 rounded-lg inline-flex items-center gap-2">
+                    <i class="fas fa-directions"></i> Ver en Google Maps
+                </a>
+            </div>
+
+            <div class="bg-card p-4 rounded-2xl border border-gray-800">
+                <iframe src="https://maps.google.com/maps?q=Body+Trainer+Gym+Arboledas+Jinetes+35&output=embed" width="100%" height="400" style="border:0; border-radius: 16px;" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-24 px-4 bg-gradient-to-r from-red-600 to-red-700 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="heading text-6xl mb-6">¿Listo Para Entrenar?</h2>
+            <p class="text-xl mb-12 text-red-100">Comienza hoy y entrena tu primer día completamente gratis</p>
+
+            <div class="flex flex-col sm:flex-row gap-6 justify-center">
+                <a href="https://wa.me/525532652927?text=Hola%2C%20quiero%20empezar%20a%20entrenar%20en%20Body%20Trainer" class="bg-white text-red-600 font-bold px-8 py-4 rounded-lg text-lg hover:bg-gray-100 transition inline-flex items-center justify-center gap-2">
+                    <i class="fab fa-whatsapp"></i> Escríbeme por WhatsApp
+                </a>
+                <a href="tel:5532652927" class="bg-red-800 text-white font-bold px-8 py-4 rounded-lg text-lg hover:bg-red-900 transition inline-flex items-center justify-center gap-2">
+                    <i class="fas fa-phone"></i> Llamar Ahora
+                </a>
+            </div>
+
+            <p class="mt-8 text-sm text-red-100">No hay tarjeta de crédito requerida • Sin compromisos • Cancela gratis cuando quieras</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 py-12 px-4 bg-black">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-4 gap-8 mb-8">
+            <div>
+                <h3 class="heading text-2xl mb-4">BODYTRAINER</h3>
+                <p class="text-gray-400">El gym que se adapta a ti, no al revés.</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Rápido</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="#planes" class="hover:text-red-500">Planes</a></li>
+                    <li><a href="#ubicacion" class="hover:text-red-500">Ubicación</a></li>
+                    <li><a href="#faq" class="hover:text-red-500">FAQ</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Contacto</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="tel:5532652927" class="hover:text-red-500">📞 55 3265-2927</a></li>
+                    <li><a href="https://wa.me/525532652927" class="hover:text-red-500">💬 WhatsApp</a></li>
+                    <li><a href="https://maps.google.com/?q=Body+Trainer+Gym+Arboledas" class="hover:text-red-500">📍 Ubicación</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Redes Sociales</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="https://instagram.com/bodytrainer_gf_arboledas" target="_blank" class="hover:text-red-500">📸 Instagram</a></li>
+                    <li><a href="https://facebook.com/BodytrainerGymArboledas" target="_blank" class="hover:text-red-500">👥 Facebook</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 BODYTRAINER GYM Arboledas. Todos los derechos reservados.</p>
+            <p class="mt-2">Diseñado para convertir. Optimizado para móvil. Generado con ❤️</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Floating Button -->
+    <a href="https://wa.me/525532652927?text=Hola%20BODYTRAINER%2C%20quiero%20conocer%20m%C3%A1s" class="whatsapp-float" title="Contactar por WhatsApp">
+        <i class="fab fa-whatsapp text-white text-3xl"></i>
+    </a>
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "BODYTRAINER GYM Arboledas",
+        "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200",
+        "description": "Gimnasio premium sin compromisos. Acceso flexible 365 días, 5AM-11PM. Planes desde $50.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Calzada de los Jinetes 35",
+            "addressLocality": "Las Arboledas",
+            "addressRegion": "Tlalnepantla de Baz",
+            "postalCode": "54026",
+            "addressCountry": "MX"
+        },
+        "telephone": "525532652927",
+        "url": "https://garallen2389-create.github.io/GYMS/generated/body-trainer-premium.html",
+        "openingHoursSpecification": [
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                "opens": "05:00",
+                "closes": "23:00"
+            },
+            {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Saturday", "Sunday"],
+                "opens": "07:00",
+                "closes": "19:00"
+            }
+        ],
+        "priceRange": "$$",
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "187"
+        }
+    }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "¿Puedo cancelar mi membresía cuando quiera?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sí, sin preguntas. Sin penalizaciones. Puedes cancelar cuando lo necesites."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Hay entrenadores disponibles?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sí, nuestros entrenadores están disponibles para asesorarte sin costo."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "¿Hay estacionamiento?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sí, contamos con 40 espacios de estacionamiento gratuito."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+
+        // Mobile menu (if added)
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        });
+
+        document.querySelectorAll('.animate-in').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>

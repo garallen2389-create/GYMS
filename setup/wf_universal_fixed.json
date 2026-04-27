@@ -1,0 +1,102 @@
+{
+  "name": "Universal — Negocios Arboledas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "whatsapp-universal",
+        "webhookId": "64eb24a7-539b-4ef5-b980-13d335c61391",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh_wa",
+      "name": "WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json;\nconst entry = body.entry?.[0];\nconst change = entry?.changes?.[0];\nconst message = change?.value?.messages?.[0];\nlet from, text, to;\nif (message) {\n  from = message.from;\n  text = (message.text?.body || '').toLowerCase().trim();\n  to = change.value.metadata?.phone_number_id || '';\n} else {\n  from = body.from || body.From || '';\n  text = (body.text?.body || body.Body || '').toLowerCase().trim();\n  to = body.to || body.To || '';\n}\nreturn [{ json: { from, text, to, timestamp: Date.now() } }];"
+      },
+      "id": "parse_msg",
+      "name": "Parsear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const negociosDB = {\n  '5532652927': { id: 1, nombre: 'Body Trainer Gym Arboledas', tipo: 'gimnasio', telefono: '5532652927', direccion: 'Calzada de los Jinetes 35, Las Arboledas', horarios: 'Lun-Vie 5AM-11PM | Sáb-Dom 7AM-7PM | 365 días', servicios: [{ nombre: 'Visita del día', precio: 50 }, { nombre: 'Semana', precio: 199 }, { nombre: 'Mensual ilimitado', precio: 699 }, { nombre: 'Estudiante mensual', precio: 599 }] }\n};\nconst { from, text, to } = $input.item.json;\nconst negocio = negociosDB[to] || negociosDB['5532652927'];\nconst menuMap = {\n  gimnasio: `🏋️ *Bienvenido a ${negocio.nombre}*\\n\\n¿Qué necesitas?\\n\\n1️⃣ Ver planes y precios\\n2️⃣ Horarios y ubicación\\n3️⃣ Hablar con el equipo\\n4️⃣ Cómo llegar\\n\\n_Escribe el número de tu opción_`,\n  barberia: `✂️ *Bienvenido a ${negocio.nombre}*\\n\\n¿Qué necesitas?\\n\\n1️⃣ Ver servicios y precios\\n2️⃣ Agendar cita\\n3️⃣ Horarios\\n4️⃣ Cómo llegar\\n\\n_Escribe el número de tu opción_`,\n  restaurante: `🍽️ *Bienvenido a ${negocio.nombre}*\\n\\n¿Qué necesitas?\\n\\n1️⃣ Ver menú\\n2️⃣ Reservar mesa\\n3️⃣ Hacer pedido para llevar\\n4️⃣ Horarios y ubicación\\n\\n_Escribe el número de tu opción_`,\n  cafe: `☕ *Bienvenido a ${negocio.nombre}*\\n\\n¿Qué necesitas?\\n\\n1️⃣ Ver menú\\n2️⃣ Hacer pedido\\n3️⃣ Horarios\\n4️⃣ Cómo llegar\\n\\n_Escribe el número de tu opción_`\n};\nconst saludos = ['hola','hi','hello','buenas','buenos','buen','inicio','menu','start','0',''];\nlet msg = '';\nif (saludos.some(s => text.startsWith(s))) {\n  msg = menuMap[negocio.tipo] || menuMap.gimnasio;\n} else if (text === '1') {\n  if (negocio.tipo === 'gimnasio') {\n    const planes = negocio.servicios.map((s,i) => `${i+1}. *${s.nombre}*: $${s.precio}`).join('\\n');\n    msg = `🏋️ *Planes ${negocio.nombre}*\\n\\n${planes}\\n\\n_Para inscribirte escríbenos:_\\nhttps://wa.me/${negocio.telefono}`;\n  } else {\n    const items = negocio.servicios.map(s => `• *${s.nombre}*${s.precio > 0 ? ': $'+s.precio : ''}`).join('\\n');\n    msg = `📋 *Servicios ${negocio.nombre}*\\n\\n${items}\\n\\nhttps://wa.me/${negocio.telefono}`;\n  }\n} else if (text === '2') {\n  msg = `📍 *${negocio.nombre}*\\n\\n⏰ ${negocio.horarios}\\n\\n📌 ${negocio.direccion}\\n\\n🗺️ https://maps.google.com/?q=${encodeURIComponent(negocio.nombre)}`;\n} else if (text === '3') {\n  msg = `💬 *Hablar con el equipo*\\n\\n👉 https://wa.me/${negocio.telefono}\\n\\nTe atendemos de inmediato 😊`;\n} else if (text === '4') {\n  msg = `🗺️ *Cómo llegar a ${negocio.nombre}*\\n\\n📌 ${negocio.direccion}\\n\\nhttps://maps.google.com/?q=${encodeURIComponent(negocio.nombre + ' ' + negocio.direccion)}`;\n} else {\n  msg = menuMap[negocio.tipo] || menuMap.gimnasio;\n}\nreturn [{ json: { ...$input.item.json, negocio, mensaje_respuesta: msg } }];"
+      },
+      "id": "resolve_send",
+      "name": "Resolver y Responder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $json.from, type: 'text', text: { body: $json.mensaje_respuesta } }) }}"
+      },
+      "id": "send_wa",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [840, 300]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "stripe-webhook-universal",
+        "webhookId": "ce245c8e-87eb-459e-bce2-68051ffee0f7",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh_stripe",
+      "name": "Stripe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 550]
+    },
+    {
+      "parameters": {
+        "jsCode": "const event = $input.item.json;\nif (event.type === 'checkout.session.completed') {\n  const session = event.data?.object || {};\n  return [{ json: { pago_ok: true, stripe_id: session.id, amount: (session.amount_total||0)/100, usuario: session.customer_details?.name, telefono: session.customer_details?.phone } }];\n}\nreturn [{ json: { skip: true, event_type: event.type } }];"
+      },
+      "id": "proc_stripe",
+      "name": "Procesar Stripe",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 550]
+    },
+    {
+      "parameters": {
+        "rule": { "interval": [{ "triggerAtHour": 10, "triggerAtMinute": 0 }] }
+      },
+      "id": "cron_fu",
+      "name": "Cron Follow-up 10AM",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [240, 780]
+    }
+  ],
+  "connections": {
+    "WhatsApp Webhook": { "main": [[{ "node": "Parsear Mensaje", "type": "main", "index": 0 }]] },
+    "Parsear Mensaje": { "main": [[{ "node": "Resolver y Responder", "type": "main", "index": 0 }]] },
+    "Resolver y Responder": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] },
+    "Stripe Webhook": { "main": [[{ "node": "Procesar Stripe", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "saveManualExecutions": true }
+}

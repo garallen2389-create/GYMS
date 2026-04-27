@@ -1,0 +1,67 @@
+{
+  "name": "Chatbot — Búfalo Barbería Arboledas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bufalo-barberia",
+        "webhookId": "ac2a0d2b-304c-4f92-9c56-edfa5c8a1d5d",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh_bb",
+      "name": "WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json;\nconst entry = body.entry?.[0];\nconst change = entry?.changes?.[0];\nconst message = change?.value?.messages?.[0];\nlet from, text;\nif (message) {\n  from = message.from;\n  text = (message.text?.body || '').toLowerCase().trim();\n} else {\n  from = body.from || body.From || '';\n  text = (body.text?.body || body.Body || '').toLowerCase().trim();\n}\nreturn [{ json: { from, text, timestamp: Date.now() } }];"
+      },
+      "id": "parse_bb",
+      "name": "Parsear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { from, text } = $input.item.json;\n\nconst MENU = `✂️ *BÚFALO BARBERÍA ARBOLEDAS*\\n\\n¡Bienvenido! ¿Qué necesitas?\\n\\n1️⃣ Ver servicios y precios\\n2️⃣ Agendar cita\\n3️⃣ Horarios\\n4️⃣ Ubicación\\n\\n_Responde con el número_`;\n\nconst SERVICIOS = `💈 *SERVICIOS BÚFALO BARBERÍA*\\n\\n✂️ Corte clásico — *$80*\\n   Clásicos y modernos\\n\\n🧔 Corte + barba — *$120*\\n   El combo completo\\n\\n✨ Afeitado profesional — *$60*\\n   Con toalla caliente\\n\\n💇 Diseño de barba — *$80*\\n   Perfilar y diseñar\\n\\n👉 _Para agendar:_\\nhttps://wa.me/525532652927`;\n\nconst AGENDAR = `📅 *AGENDAR CITA EN BÚFALO*\\n\\nEscríbenos tu disponibilidad:\\n👉 https://wa.me/525532652927\\n\\n_Dinos:_\\n📌 Qué servicio quieres\\n📌 Qué día prefieres\\n📌 Qué hora\\n\\n⚡ _Te confirmamos en minutos_`;\n\nconst HORARIOS = `⏰ *HORARIOS BÚFALO BARBERÍA*\\n\\n🗓️ Lunes a Sábado: *10AM — 8PM*\\n\\n❌ Domingo cerrado\\n\\n📍 Calzada de los Jinetes 141, Local 5\\nLas Arboledas\\n\\n_Mejor atención sin esperas_ ✂️`;\n\nconst UBICACION = `📍 *CÓMO LLEGAR*\\n\\n*Búfalo Barbería Arboledas*\\nCalzada de los Jinetes 141, Local 5\\nLas Arboledas, Tlalnepantla de Baz\\n\\n🗺️ https://maps.google.com/maps?q=Bufalo+Barberia+Jinetes+141\\n\\n_En el mismo local que Body Trainer_ 📌\\n_Subiendo por Jinetes hacia arriba_ 👆`;\n\nconst saludos = ['hola','hi','hello','buenas','buenos','buen','inicio','menu','start','0'];\nlet msg;\nif (saludos.some(s => text.startsWith(s)) || text === '') {\n  msg = MENU;\n} else if (text === '1' || text.includes('servicio') || text.includes('precio') || text.includes('corte')) {\n  msg = SERVICIOS;\n} else if (text === '2' || text.includes('agendar') || text.includes('cita') || text.includes('hora') || text.includes('appointment')) {\n  msg = AGENDAR;\n} else if (text === '3' || text.includes('horario') || text.includes('abierto') || text.includes('cierra')) {\n  msg = HORARIOS;\n} else if (text === '4' || text.includes('ubicac') || text.includes('direcc') || text.includes('donde') || text.includes('llegar')) {\n  msg = UBICACION;\n} else if (text.includes('barba') || text.includes('afeit') || text.includes('diseño')) {\n  msg = SERVICIOS;\n} else {\n  msg = MENU;\n}\n\nreturn [{ json: { from, mensaje_respuesta: msg } }];"
+      },
+      "id": "logic_bb",
+      "name": "Lógica Chatbot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $json.from, type: 'text', text: { body: $json.mensaje_respuesta } }) }}"
+      },
+      "id": "send_bb",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [840, 300]
+    }
+  ],
+  "connections": {
+    "WhatsApp Webhook": { "main": [[{ "node": "Parsear Mensaje", "type": "main", "index": 0 }]] },
+    "Parsear Mensaje": { "main": [[{ "node": "Lógica Chatbot", "type": "main", "index": 0 }]] },
+    "Lógica Chatbot": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "saveManualExecutions": true }
+}

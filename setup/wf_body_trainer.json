@@ -1,0 +1,67 @@
+{
+  "name": "Chatbot — Body Trainer Gym Arboledas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "body-trainer",
+        "webhookId": "5916e12a-c498-4177-b024-4565513db700",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh_bt",
+      "name": "WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json;\nconst entry = body.entry?.[0];\nconst change = entry?.changes?.[0];\nconst message = change?.value?.messages?.[0];\nlet from, text;\nif (message) {\n  from = message.from;\n  text = (message.text?.body || '').toLowerCase().trim();\n} else {\n  from = body.from || body.From || '';\n  text = (body.text?.body || body.Body || '').toLowerCase().trim();\n}\nreturn [{ json: { from, text, timestamp: Date.now() } }];"
+      },
+      "id": "parse_bt",
+      "name": "Parsear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { from, text } = $input.item.json;\n\nconst MENU = `🏋️ *BODY TRAINER GYM ARBOLEDAS*\\n\\nHola! ¿Qué necesitas?\\n\\n1️⃣ Ver planes y precios\\n2️⃣ Horarios\\n3️⃣ Ubicación\\n4️⃣ Hablar con el equipo\\n\\n_Responde con el número_`;\n\nconst PLANES = `💪 *PLANES BODY TRAINER*\\n\\n1️⃣ Visita del día — *$50*\\n   Un día completo de entrenamiento\\n\\n2️⃣ Semana — *$199*\\n   7 días sin límite\\n\\n3️⃣ Mensual ilimitado — *$699* ⭐\\n   El más popular\\n\\n4️⃣ Estudiante mensual — *$599*\\n   Con credencial vigente\\n\\n✅ Abierto 365 días\\n✅ 5AM a 11PM\\n✅ Sin contratos forzosos\\n\\n👉 _Escríbenos para inscribirte:_\\nhttps://wa.me/525532652927`;\n\nconst HORARIOS = `⏰ *HORARIOS BODY TRAINER*\\n\\n🗓️ Lunes a Viernes: *5AM — 11PM*\\n🗓️ Sábado y Domingo: *7AM — 7PM*\\n\\n✅ *Abierto los 365 días del año*\\n\\n📍 Calzada de los Jinetes 35, Las Arboledas\\n\\n_¿Vienes hoy? Te esperamos!_ 💪`;\n\nconst UBICACION = `📍 *CÓMO LLEGAR*\\n\\n*Body Trainer Gym Arboledas*\\nCalzada de los Jinetes 35\\nLas Arboledas, Tlalnepantla de Baz\\n\\n🗺️ https://maps.google.com/maps?q=Body+Trainer+Gym+Arboledas+Jinetes+35\\n\\n📞 55 3265-2927\\n\\n_Estamos en Jinetes casi esquina con Arboledas_ 🏋️`;\n\nconst EQUIPO = `💬 *HABLAR CON EL EQUIPO*\\n\\nEscríbenos directamente:\\n👉 https://wa.me/525532652927\\n\\nO llámanos:\\n📞 55 3265-2927\\n\\n_Te atendemos en minutos_ ⚡`;\n\nconst saludos = ['hola','hi','hello','buenas','buenos','buen','inicio','menu','start','0','holi','qué hay','que hay'];\nlet msg;\nif (saludos.some(s => text.startsWith(s)) || text === '') {\n  msg = MENU;\n} else if (text === '1' || text.includes('plan') || text.includes('precio') || text.includes('membres')) {\n  msg = PLANES;\n} else if (text === '2' || text.includes('horario') || text.includes('hora')) {\n  msg = HORARIOS;\n} else if (text === '3' || text.includes('ubicac') || text.includes('direcc') || text.includes('donde') || text.includes('llegar')) {\n  msg = UBICACION;\n} else if (text === '4' || text.includes('hablar') || text.includes('equipo') || text.includes('persona') || text.includes('asesor')) {\n  msg = EQUIPO;\n} else if (text.includes('inscrib') || text.includes('registro') || text.includes('comprar') || text.includes('quiero')) {\n  msg = PLANES;\n} else {\n  msg = MENU;\n}\n\nreturn [{ json: { from, mensaje_respuesta: msg } }];"
+      },
+      "id": "logic_bt",
+      "name": "Lógica Chatbot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $json.from, type: 'text', text: { body: $json.mensaje_respuesta } }) }}"
+      },
+      "id": "send_bt",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [840, 300]
+    }
+  ],
+  "connections": {
+    "WhatsApp Webhook": { "main": [[{ "node": "Parsear Mensaje", "type": "main", "index": 0 }]] },
+    "Parsear Mensaje": { "main": [[{ "node": "Lógica Chatbot", "type": "main", "index": 0 }]] },
+    "Lógica Chatbot": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "saveManualExecutions": true }
+}

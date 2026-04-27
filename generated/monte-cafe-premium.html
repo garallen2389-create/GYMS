@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monte Café Arboledas — Tu Café Favorito Entregado</title>
+    <meta name="description" content="Desayunos, café y postres en Arboledas. Pide por WhatsApp. Entrega gratis. Abierto 7AM-8PM todos los días.">
+    <meta name="keywords" content="café Arboledas, desayuno, café para llevar, entregas Arboledas, bebidas">
+    <meta property="og:title" content="Monte Café — Tu Café Favorito">
+    <meta property="og:description" content="Desayunos y café. Pide por WhatsApp. Entrega gratis en Arboledas.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .heading { font-family: 'Bebas Neue', cursive; letter-spacing: 0.05em; }
+        :root {--primary: #78350f; --accent: #a16207; --bg: #0a0a0a; }
+        body { background-color: var(--bg); color: white; }
+        .text-gradient { background: linear-gradient(to right, #a16207, #d97706); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-primary { background-color: var(--primary); transition: all 0.3s; color: white; }
+        .btn-primary:hover { background-color: var(--accent); transform: translateY(-2px); }
+        .btn-secondary { border: 2px solid var(--primary); color: var(--primary); }
+        .btn-secondary:hover { background-color: var(--primary); color: white; }
+        .card-hover { transition: all 0.3s; }
+        .card-hover:hover { transform: translateY(-5px); }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeInUp 0.8s ease-out forwards; }
+        .bg-card { background-color: #111111; }
+    </style>
+</head>
+<body>
+    <nav class="fixed top-0 w-full bg-opacity-95 backdrop-blur z-1000 border-b border-amber-700 border-opacity-20">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="heading text-2xl text-amber-700">☕ MONTE CAFÉ</h1>
+            <a href="https://wa.me/525532652927?text=Quiero%20hacer%20un%20pedido" class="btn-primary px-6 py-2 rounded text-sm">Pedir Ahora</a>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-80 h-80 bg-amber-600 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-4xl relative z-10 text-center">
+            <h1 class="heading text-7xl md:text-8xl leading-tight mb-6 animate-in">Tu Café Favorito
+                <span class="text-gradient">Entregado</span></h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-in" style="animation-delay: 0.2s">
+                Desayunos y bebidas. Pide por WhatsApp. Entrega gratis en Arboledas.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-in" style="animation-delay: 0.4s">
+                <a href="https://wa.me/525532652927?text=Quiero%20pedir" class="btn-primary px-8 py-4 rounded-lg text-lg">Hacer Pedido →</a>
+                <a href="#menu" class="btn-secondary px-8 py-4 rounded-lg text-lg">Ver Menú</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-amber-700 py-6 text-white text-center">
+        <h3 class="heading text-3xl">☕ Abierto 7AM - 8PM</h3>
+        <p>Todos los días. Entrega gratis en Arboledas.</p>
+    </section>
+
+    <section id="menu" class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-16 text-center">Nuestro Menú</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🥐</div>
+                <h3 class="heading text-2xl mb-3">Desayuno Completo</h3>
+                <p class="text-gray-400 text-2xl">$95</p>
+                <p class="text-gray-500 text-sm mt-4">Café + pan + proteína</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center border-2 border-amber-700">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🔥</div>
+                <h3 class="heading text-2xl mb-3">Bebida Caliente</h3>
+                <p class="text-gray-400 text-2xl">$45</p>
+                <p class="text-gray-500 text-sm mt-4">Café, té, chocolate</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🥤</div>
+                <h3 class="heading text-2xl mb-3">Malteada</h3>
+                <p class="text-gray-400 text-2xl">$65</p>
+                <p class="text-gray-500 text-sm mt-4">Sabores variados</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">📦</div>
+                <h3 class="heading text-2xl mb-3">Para Llevar</h3>
+                <p class="text-gray-400 text-2xl">Gratis</p>
+                <p class="text-gray-500 text-sm mt-4">Envío incluido</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-16 text-center">Lo Que Dicen</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Mejor café de la zona. Desayunos deliciosos. Muy recomendado."</p>
+                <p class="font-bold">María González</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Entrega rápida. Comida fresca. Servicio excelente."</p>
+                <p class="font-bold">Jorge Ramírez</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Mi lugar favorito para desayunar. Altamente recomendado."</p>
+                <p class="font-bold">Laura Mendoza</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-12 text-center">Ubicación</h2>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div>
+                <h3 class="heading text-3xl mb-6">Monte Café</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-map-marker-alt text-amber-600 mr-3"></i>
+                    Calzada de los Jinetes 77, Las Arboledas
+                </p>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-phone text-amber-600 mr-3"></i>
+                    <a href="tel:5532652927" class="hover:text-amber-600">55 3265-2927</a>
+                </p>
+                <a href="https://wa.me/525532652927?text=Quiero%20hacer%20un%20pedido" class="btn-primary px-6 py-3 rounded-lg inline-flex items-center gap-2">
+                    <i class="fab fa-whatsapp"></i> Pedir por WhatsApp
+                </a>
+            </div>
+            <div class="bg-card p-4 rounded-2xl border border-gray-800">
+                <iframe src="https://maps.google.com/maps?q=Monte+Cafe+Jinetes+77&output=embed" width="100%" height="400" style="border:0; border-radius: 16px;" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 bg-gradient-to-r from-amber-700 to-amber-800 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="heading text-6xl mb-6">¿Antojo de Café?</h2>
+            <a href="https://wa.me/525532652927?text=Quiero%20hacer%20un%20pedido" class="bg-white text-amber-700 font-bold px-8 py-4 rounded-lg text-lg hover:bg-gray-100 inline-flex items-center gap-2">
+                <i class="fab fa-whatsapp"></i> Pedir Ahora
+            </a>
+        </div>
+    </section>
+
+    <footer class="border-t border-gray-800 py-12 px-4 bg-black">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <h3 class="heading text-2xl mb-4 text-amber-600">MONTE CAFÉ</h3>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Contacto</h4>
+                <p class="text-gray-400 text-sm"><a href="tel:5532652927" class="hover:text-amber-600">55 3265-2927</a></p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Horarios</h4>
+                <p class="text-gray-400 text-sm">7AM - 8PM | Todos los días</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 Monte Café. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/525532652927?text=Hola%20Monte%20Cafe" class="whatsapp-float">
+        <i class="fab fa-whatsapp text-white text-3xl"></i>
+    </a>
+</body>
+</html>

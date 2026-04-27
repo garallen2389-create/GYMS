@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búfalo Barbería Arboledas — Barbería Premium sin Esperas</title>
+    <meta name="description" content="Barbería experta en Arboledas. Agenda tu cita por WhatsApp. Cortes, barba y diseño profesional. Abierto Lun-Sáb 10AM-8PM.">
+    <meta name="keywords" content="barbería Arboledas, corte de cabello, barba profesional, agendar cita barbería, barberos expertos">
+    <meta property="og:title" content="Búfalo Barbería — Barbería Premium sin Esperas">
+    <meta property="og:description" content="Barbería experta. Agenda por WhatsApp. Sin esperas. Cortes desde $80.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1585747860715-cd4628902d4a?w=1200&h=630&fit=crop">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .heading { font-family: 'Bebas Neue', cursive; letter-spacing: 0.05em; font-weight: 700; }
+        :root {
+            --primary: #92400e;
+            --bg: #0a0a0a;
+            --accent: #b45309;
+            --dark: #1a1a1a;
+            --card: #111111;
+        }
+        body { background-color: var(--bg); color: white; }
+        .text-gradient {
+            background: linear-gradient(to right, #b45309, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .btn-primary { background-color: var(--primary); transition: all 0.3s; }
+        .btn-primary:hover { background-color: var(--accent); transform: translateY(-2px); }
+        .btn-secondary { border: 2px solid var(--primary); color: var(--primary); }
+        .btn-secondary:hover { background-color: var(--primary); color: white; }
+        .card-hover { transition: all 0.3s; }
+        .card-hover:hover { transform: translateY(-5px); }
+        .pricing-card.featured { border: 3px solid var(--accent); box-shadow: 0 0 40px rgba(180, 83, 9, 0.3); transform: scale(1.05); }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .feature-icon { font-size: 2.5rem; margin-bottom: 1rem; color: var(--primary); }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeInUp 0.8s ease-out forwards; }
+        .badge { display: inline-block; background-color: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; margin-bottom: 1rem; }
+        .bg-card { background-color: var(--card); }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full bg-opacity-95 backdrop-blur z-1000 border-b border-yellow-700 border-opacity-20">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="heading text-2xl text-yellow-700">✂️ BÚFALO</h1>
+            <div class="hidden sm:flex gap-6 text-sm">
+                <a href="#servicios" class="hover:text-yellow-600">Servicios</a>
+                <a href="#ubicacion" class="hover:text-yellow-600">Ubicación</a>
+            </div>
+            <a href="https://wa.me/525532652927?text=Quiero%20agendar%20una%20cita" class="btn-primary px-6 py-2 rounded text-sm text-white">Agendar</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-80 h-80 bg-yellow-600 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-4xl relative z-10 text-center">
+            <div class="badge">✂️ Barbería Experta</div>
+            <h1 class="heading text-7xl md:text-8xl leading-tight mb-6 animate-in">
+                Barbería Premium
+                <span class="text-gradient">Sin Esperas</span>
+            </h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-in" style="animation-delay: 0.2s">
+                Agenda tu cita por WhatsApp. Los mejores barberos de Arboledas listos para ti.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-in" style="animation-delay: 0.4s">
+                <a href="https://wa.me/525532652927?text=Quiero%20agendar%20una%20cita" class="btn-primary px-8 py-4 rounded-lg text-lg text-white">Agendar Cita →</a>
+                <a href="#servicios" class="btn-secondary px-8 py-4 rounded-lg text-lg">Ver Servicios</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner -->
+    <section class="bg-yellow-700 py-6 text-white text-center">
+        <h3 class="heading text-3xl mb-2">⏰ Lun-Sáb: 10AM - 8PM</h3>
+        <p>Ubicación: Calzada de los Jinetes 141, Local 5</p>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-16 text-center">Nuestros Servicios</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div class="feature-icon"><i class="fas fa-scissors"></i></div>
+                <h3 class="heading text-2xl mb-3">Corte Clásico</h3>
+                <p class="text-gray-400">$80</p>
+                <p class="text-gray-500 text-sm mt-4">Estilos clásicos y modernos con acabado perfecto</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center border-2 border-yellow-700">
+                <div class="feature-icon"><i class="fas fa-beard"></i></div>
+                <h3 class="heading text-2xl mb-3">Corte + Barba</h3>
+                <p class="text-gray-400">$120</p>
+                <p class="text-gray-500 text-sm mt-4">El combo completo. Cabello + barba profesional</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div class="feature-icon"><i class="fas fa-razor"></i></div>
+                <h3 class="heading text-2xl mb-3">Afeitado Pro</h3>
+                <p class="text-gray-400">$60</p>
+                <p class="text-gray-500 text-sm mt-4">Con toalla caliente y técnica profesional</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div class="feature-icon"><i class="fas fa-gem"></i></div>
+                <h3 class="heading text-2xl mb-3">Diseño de Barba</h3>
+                <p class="text-gray-400">$80</p>
+                <p class="text-gray-500 text-sm mt-4">Perfilar y diseñar tu barba como un experto</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonios -->
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-16 text-center">Lo Que Dicen Nuestros Clientes</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Mejor barbería de la zona. Los barberos saben lo que hacen. Recomendado 100%"</p>
+                <p class="font-bold">Roberto Sánchez</p>
+                <p class="text-yellow-600 text-sm">Cliente desde hace 1 año</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Sin esperas. Agendar por WhatsApp es muy cómodo. Servicio excelente."</p>
+                <p class="font-bold">Diego Flores</p>
+                <p class="text-yellow-600 text-sm">Cliente regular</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Profesionales de verdad. Mi barba nunca se vio mejor. Muy recomendado."</p>
+                <p class="font-bold">Javier López</p>
+                <p class="text-yellow-600 text-sm">Cliente desde hace 6 meses</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location -->
+    <section id="ubicacion" class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-12 text-center">Ubicación</h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+            <div>
+                <h3 class="heading text-3xl mb-6">Búfalo Barbería</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-map-marker-alt text-yellow-600 mr-3"></i>
+                    Calzada de los Jinetes 141, Local 5, Las Arboledas
+                </p>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-phone text-yellow-600 mr-3"></i>
+                    <a href="tel:5532652927" class="hover:text-yellow-600">55 3265-2927</a>
+                </p>
+                <p class="text-gray-300 text-lg mb-8">
+                    <i class="fas fa-clock text-yellow-600 mr-3"></i>
+                    Lun-Sáb: 10AM - 8PM | Domingo cerrado
+                </p>
+                <a href="https://wa.me/525532652927?text=Quiero%20agendar%20una%20cita%20en%20Bufalo" class="btn-primary px-6 py-3 rounded-lg inline-flex items-center gap-2 text-white">
+                    <i class="fab fa-whatsapp"></i> Agendar por WhatsApp
+                </a>
+            </div>
+            <div class="bg-card p-4 rounded-2xl border border-gray-800">
+                <iframe src="https://maps.google.com/maps?q=Bufalo+Barberia+Jinetes+141&output=embed" width="100%" height="400" style="border:0; border-radius: 16px;" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-24 px-4 bg-gradient-to-r from-yellow-700 to-yellow-800 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="heading text-6xl mb-6">¿Necesitas Un Corte?</h2>
+            <p class="text-xl mb-12">Agenda ahora y obtén 10% de descuento en tu primera cita</p>
+            <a href="https://wa.me/525532652927?text=Quiero%20agendar%20mi%20primera%20cita" class="bg-white text-yellow-700 font-bold px-8 py-4 rounded-lg text-lg hover:bg-gray-100 inline-flex items-center gap-2">
+                <i class="fab fa-whatsapp"></i> Agendar Ahora
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-gray-800 py-12 px-4 bg-black">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <h3 class="heading text-2xl mb-4 text-yellow-600">BÚFALO BARBERÍA</h3>
+                <p class="text-gray-400">Tu barbería de confianza en Arboledas</p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Contacto</h4>
+                <ul class="space-y-2 text-gray-400 text-sm">
+                    <li><a href="tel:5532652927" class="hover:text-yellow-600">📞 55 3265-2927</a></li>
+                    <li><a href="https://wa.me/525532652927" class="hover:text-yellow-600">💬 WhatsApp</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Horarios</h4>
+                <p class="text-gray-400 text-sm">Lun-Sáb: 10AM - 8PM</p>
+                <p class="text-gray-400 text-sm">Domingo cerrado</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 Búfalo Barbería. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/525532652927?text=Hola%20Bufalo%2C%20quiero%20agendar%20una%20cita" class="whatsapp-float" title="Agendar por WhatsApp">
+        <i class="fab fa-whatsapp text-white text-3xl"></i>
+    </a>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Búfalo Barbería",
+        "description": "Barbería profesional sin esperas. Agendar por WhatsApp.",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Calzada de los Jinetes 141, Local 5",
+            "addressLocality": "Las Arboledas",
+            "postalCode": "54026",
+            "addressCountry": "MX"
+        },
+        "telephone": "525532652927",
+        "openingHoursSpecification": {
+            "@type": "OpeningHoursSpecification",
+            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+            "opens": "10:00",
+            "closes": "20:00"
+        }
+    }
+    </script>
+</body>
+</html>

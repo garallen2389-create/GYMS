@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Anafre Arboledas — La Mejor Parrilla de Arboledas</title>
+    <meta name="description" content="Parrilla premium en Arboledas. Carnes de calidad. Reserva mesa o pide para llevar por WhatsApp. Abierto 1PM-11PM.">
+    <meta name="keywords" content="parrilla Arboledas, asado, carnes, barbacoa, reserva mesa Arboledas">
+    <meta property="og:title" content="El Anafre — La Mejor Parrilla">
+    <meta property="og:description" content="Parrilla premium. Carnes de calidad. Reserva por WhatsApp.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .heading { font-family: 'Bebas Neue', cursive; letter-spacing: 0.05em; }
+        :root { --primary: #7f1d1d; --accent: #991b1b; --bg: #0a0a0a; }
+        body { background-color: var(--bg); color: white; }
+        .text-gradient { background: linear-gradient(to right, #991b1b, #dc2626); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .btn-primary { background-color: var(--primary); color: white; transition: all 0.3s; }
+        .btn-primary:hover { background-color: var(--accent); transform: translateY(-2px); }
+        .btn-secondary { border: 2px solid var(--primary); color: var(--primary); }
+        .btn-secondary:hover { background-color: var(--primary); color: white; }
+        .card-hover { transition: all 0.3s; }
+        .card-hover:hover { transform: translateY(-5px); }
+        .whatsapp-float { position: fixed; bottom: 20px; right: 20px; width: 60px; height: 60px; background-color: #25d366; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-in { animation: fadeInUp 0.8s ease-out forwards; }
+        .bg-card { background-color: #111111; }
+    </style>
+</head>
+<body>
+    <nav class="fixed top-0 w-full bg-opacity-95 backdrop-blur z-1000 border-b border-red-900 border-opacity-20">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="heading text-2xl text-red-700">🔥 EL ANAFRE</h1>
+            <a href="https://wa.me/525532652927?text=Quiero%20reservar%20una%20mesa" class="btn-primary px-6 py-2 rounded text-sm">Reservar</a>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen flex items-center justify-center px-4 pt-20 overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-10 left-10 w-80 h-80 bg-red-600 rounded-full blur-3xl"></div>
+        </div>
+        <div class="max-w-4xl relative z-10 text-center">
+            <h1 class="heading text-7xl md:text-8xl leading-tight mb-6 animate-in">La Mejor Parrilla
+                <span class="text-gradient">De Arboledas</span></h1>
+            <p class="text-xl text-gray-300 mb-8 max-w-2xl mx-auto animate-in" style="animation-delay: 0.2s">
+                Carnes de calidad. Reserva mesa o pide para llevar. Abierto 1PM-11PM todos los días.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center animate-in" style="animation-delay: 0.4s">
+                <a href="https://wa.me/525532652927?text=Quiero%20reservar%20mesa" class="btn-primary px-8 py-4 rounded-lg text-lg">Reservar Mesa →</a>
+                <a href="#menu" class="btn-secondary px-8 py-4 rounded-lg text-lg">Ver Menú</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-red-700 py-6 text-white text-center">
+        <h3 class="heading text-3xl">🔥 1PM - 11PM | Todos Los Días</h3>
+        <p>Calzada de los Jinetes 35, Las Arboledas</p>
+    </section>
+
+    <section id="menu" class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-16 text-center">Nuestro Menú</h2>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div class="bg-card p-8 rounded-2xl card-hover text-center border-2 border-red-700">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🥩</div>
+                <h3 class="heading text-2xl mb-3">Parrillada Para 2</h3>
+                <p class="text-gray-400 text-2xl">$320</p>
+                <p class="text-gray-500 text-sm mt-4">Carnes variadas + tortillas + guarniciones</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">🍖</div>
+                <h3 class="heading text-2xl mb-3">Orden Individual</h3>
+                <p class="text-gray-400 text-2xl">$150</p>
+                <p class="text-gray-500 text-sm mt-4">Carne a tu gusto</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl card-hover text-center">
+                <div style="font-size: 2.5rem; margin-bottom: 1rem;">📦</div>
+                <h3 class="heading text-2xl mb-3">Para Llevar</h3>
+                <p class="text-gray-400 text-2xl">Gratis</p>
+                <p class="text-gray-500 text-sm mt-4">Entrega en Arboledas</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-16 text-center">Lo Que Dicen Nuestros Clientes</h2>
+        <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"La mejor parrilla de la zona. Carnes de excelente calidad. 100% recomendado."</p>
+                <p class="font-bold">Arturo García</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Servicio excelente. La parrilla muy sabrosa. Excelentes precios."</p>
+                <p class="font-bold">Fernando López</p>
+            </div>
+            <div class="bg-card p-8 rounded-2xl border border-gray-800">
+                <div class="flex gap-2 mb-4">
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                    <i class="fas fa-star text-yellow-400"></i>
+                </div>
+                <p class="text-gray-300 mb-6">"Un lugar increíble para comer. Las carnes están deliciosas. Muy recomendado."</p>
+                <p class="font-bold">Patricio Morales</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 max-w-6xl mx-auto">
+        <h2 class="heading text-6xl mb-12 text-center">Ubicación</h2>
+        <div class="grid md:grid-cols-2 gap-12">
+            <div>
+                <h3 class="heading text-3xl mb-6">El Anafre</h3>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-map-marker-alt text-red-600 mr-3"></i>
+                    Calzada de los Jinetes 35, Las Arboledas
+                </p>
+                <p class="text-gray-300 text-lg mb-4">
+                    <i class="fas fa-phone text-red-600 mr-3"></i>
+                    <a href="tel:5532652927" class="hover:text-red-600">55 3265-2927</a>
+                </p>
+                <p class="text-gray-300 text-lg mb-8">
+                    <i class="fas fa-clock text-red-600 mr-3"></i>
+                    1PM - 11PM | Todos los días
+                </p>
+                <a href="https://wa.me/525532652927?text=Quiero%20reservar%20una%20mesa" class="btn-primary px-6 py-3 rounded-lg inline-flex items-center gap-2">
+                    <i class="fab fa-whatsapp"></i> Reservar por WhatsApp
+                </a>
+            </div>
+            <div class="bg-card p-4 rounded-2xl border border-gray-800">
+                <iframe src="https://maps.google.com/maps?q=El+Anafre+Jinetes+35&output=embed" width="100%" height="400" style="border:0; border-radius: 16px;" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 px-4 bg-gradient-to-r from-red-700 to-red-800 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="heading text-6xl mb-6">¿Antojo De Parrilla?</h2>
+            <p class="text-xl mb-12">Reserva ahora o pide para llevar</p>
+            <a href="https://wa.me/525532652927?text=Hola%20El%20Anafre%2C%20quiero%20reservar%20una%20mesa" class="bg-white text-red-700 font-bold px-8 py-4 rounded-lg text-lg hover:bg-gray-100 inline-flex items-center gap-2">
+                <i class="fab fa-whatsapp"></i> Contactar Ahora
+            </a>
+        </div>
+    </section>
+
+    <footer class="border-t border-gray-800 py-12 px-4 bg-black">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 mb-8">
+            <div>
+                <h3 class="heading text-2xl mb-4 text-red-600">EL ANAFRE</h3>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Contacto</h4>
+                <p class="text-gray-400 text-sm"><a href="tel:5532652927" class="hover:text-red-600">55 3265-2927</a></p>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4">Horarios</h4>
+                <p class="text-gray-400 text-sm">1PM - 11PM | Todos los días</p>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
+            <p>&copy; 2026 El Anafre. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/525532652927?text=Hola%20El%20Anafre" class="whatsapp-float">
+        <i class="fab fa-whatsapp text-white text-3xl"></i>
+    </a>
+</body>
+</html>

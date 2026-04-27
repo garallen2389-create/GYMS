@@ -1,0 +1,67 @@
+{
+  "name": "Chatbot — Monte Café Arboledas",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "monte-cafe",
+        "webhookId": "898cbc31-2cc0-4d0d-b9e6-817ed6d620c4",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "id": "wh_mc",
+      "name": "WhatsApp Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const body = $input.item.json;\nconst entry = body.entry?.[0];\nconst change = entry?.changes?.[0];\nconst message = change?.value?.messages?.[0];\nlet from, text;\nif (message) {\n  from = message.from;\n  text = (message.text?.body || '').toLowerCase().trim();\n} else {\n  from = body.from || body.From || '';\n  text = (body.text?.body || body.Body || '').toLowerCase().trim();\n}\nreturn [{ json: { from, text, timestamp: Date.now() } }];"
+      },
+      "id": "parse_mc",
+      "name": "Parsear Mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 300]
+    },
+    {
+      "parameters": {
+        "jsCode": "const { from, text } = $input.item.json;\n\nconst MENU = `☕ *MONTE CAFÉ ARBOLEDAS*\\n\\n¡Bienvenido! ¿Qué necesitas?\\n\\n1️⃣ Ver menú y precios\\n2️⃣ Hacer pedido\\n3️⃣ Horarios\\n4️⃣ Ubicación\\n\\n_Responde con el número_`;\n\nconst MENU_ITEMS = `☕ *MENÚ MONTE CAFÉ*\\n\\n🥐 Desayuno completo — *$95*\\n   Café + pan + proteína\\n\\n🔥 Bebida caliente — *$45*\\n   Café, té, chocolate, etc\\n\\n🥤 Malteada — *$65*\\n   Sabores variados\\n\\n📦 Orden para llevar — *Envío gratis*\\n   Desayunos y bebidas\\n\\n👉 _Para ordenar:_\\nhttps://wa.me/525532652927`;\n\nconst PEDIR = `📦 *HACER PEDIDO EN MONTE CAFÉ*\\n\\nEscríbenos qué quieres:\\n👉 https://wa.me/525532652927\\n\\n_Dinos:_\\n☕ Qué quieres pedir\\n📍 Entrega o para llevar\\n📞 Tu teléfono\\n\\n⚡ _Preparamos en minutos_\\n🚚 _Envío gratis en Arboledas_`;\n\nconst HORARIOS = `⏰ *HORARIOS MONTE CAFÉ*\\n\\n🗓️ Lunes a Domingo: *7AM — 8PM*\\n\\n✅ Abierto todos los días\\n\\n📍 Calzada de los Jinetes 77\\nLas Arboledas\\n\\n_Tu café favorito te espera_ ☕`;\n\nconst UBICACION = `📍 *CÓMO LLEGAR*\\n\\n*Monte Café Arboledas*\\nCalzada de los Jinetes 77\\nLas Arboledas, Tlalnepantla de Baz\\n\\n🗺️ https://maps.google.com/maps?q=Monte+Cafe+Jinetes+77\\n\\n📞 Llámanos para pedidos rápidos\\n\\n_Estamos entre Jinetes y el Paradero_ 📌`;\n\nconst saludos = ['hola','hi','hello','buenas','buenos','buen','inicio','menu','start','0'];\nlet msg;\nif (saludos.some(s => text.startsWith(s)) || text === '') {\n  msg = MENU;\n} else if (text === '1' || text.includes('menu') || text.includes('menú') || text.includes('precio') || text.includes('café')) {\n  msg = MENU_ITEMS;\n} else if (text === '2' || text.includes('pedir') || text.includes('orden') || text.includes('pedido')) {\n  msg = PEDIR;\n} else if (text === '3' || text.includes('horario') || text.includes('abierto') || text.includes('cierra')) {\n  msg = HORARIOS;\n} else if (text === '4' || text.includes('ubicac') || text.includes('direcc') || text.includes('donde') || text.includes('llegar')) {\n  msg = UBICACION;\n} else if (text.includes('desayun') || text.includes('bebida') || text.includes('malteada') || text.includes('café')) {\n  msg = MENU_ITEMS;\n} else {\n  msg = MENU;\n}\n\nreturn [{ json: { from, mensaje_respuesta: msg } }];"
+      },
+      "id": "logic_mc",
+      "name": "Lógica Chatbot",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [640, 300]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://graph.facebook.com/v18.0/{{ $env.WA_PHONE_NUMBER_ID }}/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "=Bearer {{ $env.WA_TOKEN }}" },
+            { "name": "Content-Type", "value": "application/json" }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "json",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: $json.from, type: 'text', text: { body: $json.mensaje_respuesta } }) }}"
+      },
+      "id": "send_mc",
+      "name": "Enviar WhatsApp",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [840, 300]
+    }
+  ],
+  "connections": {
+    "WhatsApp Webhook": { "main": [[{ "node": "Parsear Mensaje", "type": "main", "index": 0 }]] },
+    "Parsear Mensaje": { "main": [[{ "node": "Lógica Chatbot", "type": "main", "index": 0 }]] },
+    "Lógica Chatbot": { "main": [[{ "node": "Enviar WhatsApp", "type": "main", "index": 0 }]] }
+  },
+  "settings": { "executionOrder": "v1", "saveManualExecutions": true }
+}
