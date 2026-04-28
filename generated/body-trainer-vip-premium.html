@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BODY TRAINER — Los Más VIP del Fitness | Arboledas</title>
+<meta name="description" content="El gimnasio más exclusivo de Arboledas. Acceso 24/7, equipamiento de élite, sin contratos. Únete a los más VIP del fitness.">
+<meta property="og:title" content="BODY TRAINER VIP — Gimnasio Premium 24/7 Arboledas">
+<meta property="og:description" content="Acceso flexible 24/7. Equipamiento de élite. Sin contratos. Planes desde $90.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1200&h=630&fit=crop">
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<!-- Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --red: #e62020;
+  --red-dark: #b01818;
+  --red-glow: rgba(230,32,32,0.4);
+  --bg: #050505;
+  --bg2: #0d0d0d;
+  --card: #111111;
+  --card2: #161616;
+  --border: rgba(255,255,255,0.07);
+  --text: #ffffff;
+  --muted: #888888;
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-body: 'Montserrat', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ===== CUSTOM CURSOR ===== */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--red);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10000;
+  transition: transform 0.1s;
+}
+.cursor-follower {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--red);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  transition: all 0.12s ease;
+  opacity: 0.6;
+}
+.cursor-follower.hovered { width: 56px; height: 56px; opacity: 1; border-color: white; }
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+/* ===== PAGE LOADER ===== */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9998;
+  flex-direction: column; gap: 24px;
+}
+#loader .logo-load {
+  font-family: var(--font-heading);
+  font-size: 64px;
+  letter-spacing: 0.1em;
+  background: linear-gradient(135deg, #e62020, #ff6b6b);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+#loader .bar-wrap {
+  width: 200px; height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 1px; overflow: hidden;
+}
+#loader .bar-fill {
+  height: 100%; width: 0;
+  background: var(--red);
+  border-radius: 1px;
+  animation: loadBar 1.4s ease-in-out forwards;
+}
+@keyframes loadBar { to { width: 100%; } }
+
+/* ===== NOISE TEXTURE OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 1; opacity: 0.4;
+}
+
+/* ===== CANVAS PARTICLES ===== */
+#particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+/* ===== NAVBAR ===== */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  padding: 0 40px;
+  height: 72px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all 0.4s;
+}
+nav.scrolled {
+  background: rgba(5,5,5,0.92);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo {
+  font-family: var(--font-heading);
+  font-size: 28px; letter-spacing: 0.1em;
+  color: white;
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo span { color: var(--red); }
+.nav-links { display: flex; gap: 32px; list-style: none; }
+.nav-links a {
+  color: var(--muted); font-size: 13px;
+  font-weight: 600; letter-spacing: 0.08em;
+  text-transform: uppercase; text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: white; }
+.nav-cta {
+  background: var(--red); color: white;
+  padding: 10px 24px; border-radius: 6px;
+  font-weight: 700; font-size: 12px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none;
+  border: 2px solid transparent;
+  transition: all 0.3s;
+}
+.nav-cta:hover { background: transparent; border-color: var(--red); color: var(--red); }
+.nav-mobile-btn { display: none; background: none; border: none; color: white; font-size: 22px; cursor: pointer; }
+
+/* ===== HERO ===== */
+#hero {
+  position: relative; min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; padding: 100px 40px 60px;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 1;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(230,32,32,0.18) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(230,32,32,0.08) 0%, transparent 60%),
+    var(--bg);
+}
+.hero-image-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80&fit=crop');
+  background-size: cover; background-position: center;
+  opacity: 0.08;
+}
+.hero-lines {
+  position: absolute; inset: 0; z-index: 1;
+  background: repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(255,255,255,0.015) 80px, rgba(255,255,255,0.015) 81px);
+}
+.hero-content {
+  position: relative; z-index: 10;
+  max-width: 900px; text-align: center;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(230,32,32,0.1);
+  border: 1px solid rgba(230,32,32,0.3);
+  padding: 8px 18px; border-radius: 100px;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  color: #ff6b6b; margin-bottom: 32px;
+}
+.hero-badge::before {
+  content: ''; width: 6px; height: 6px;
+  background: #ff6b6b; border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+@keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.2; } }
+.hero-h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(72px, 12vw, 130px);
+  line-height: 0.9; letter-spacing: 0.02em;
+  margin-bottom: 8px;
+}
+.hero-h1 .line1 { display: block; color: white; }
+.hero-h1 .line2 {
+  display: block;
+  background: linear-gradient(135deg, #e62020 0%, #ff6b6b 50%, #e62020 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer { to { background-position: 200% center; } }
+.hero-sub {
+  font-size: clamp(15px, 2vw, 18px);
+  color: var(--muted); max-width: 560px;
+  margin: 28px auto 44px;
+  line-height: 1.7; font-weight: 400;
+}
+.hero-sub strong { color: white; }
+.hero-btns {
+  display: flex; gap: 16px;
+  justify-content: center; flex-wrap: wrap;
+}
+.btn-glow {
+  background: var(--red); color: white;
+  padding: 16px 40px; border-radius: 8px;
+  font-weight: 800; font-size: 14px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  text-decoration: none; border: 2px solid transparent;
+  position: relative; overflow: hidden;
+  transition: all 0.3s;
+  box-shadow: 0 0 40px rgba(230,32,32,0.35);
+}
+.btn-glow::before {
+  content: '';
+  position: absolute; top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.15), transparent);
+  transform: translateX(-100%) rotate(45deg);
+  transition: transform 0.5s;
+}
+.btn-glow:hover::before { transform: translateX(100%) rotate(45deg); }
+.btn-glow:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(230,32,32,0.5); }
+.btn-ghost {
+  background: transparent; color: white;
+  padding: 16px 40px; border-radius: 8px;
+  font-weight: 700; font-size: 14px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  text-decoration: none;
+  border: 2px solid rgba(255,255,255,0.2);
+  transition: all 0.3s;
+}
+.btn-ghost:hover { border-color: white; transform: translateY(-4px); }
+.hero-scroll {
+  position: absolute; bottom: 32px; left: 50%;
+  transform: translateX(-50%); z-index: 10;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--muted); font-size: 11px;
+  letter-spacing: 0.15em; text-transform: uppercase;
+  animation: float 2s ease-in-out infinite;
+}
+@keyframes float { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+.hero-scroll i { font-size: 18px; }
+
+/* ===== STATS BAR ===== */
+.stats-bar {
+  position: relative; z-index: 10;
+  background: rgba(230,32,32,0.05);
+  border-top: 1px solid rgba(230,32,32,0.2);
+  border-bottom: 1px solid rgba(230,32,32,0.2);
+  padding: 32px 40px;
+  display: flex; justify-content: center; gap: 0;
+}
+.stat-item {
+  flex: 1; max-width: 220px;
+  text-align: center; padding: 0 32px;
+  border-right: 1px solid rgba(255,255,255,0.06);
+}
+.stat-item:last-child { border-right: none; }
+.stat-number {
+  font-family: var(--font-heading);
+  font-size: 52px; line-height: 1;
+  color: var(--red);
+}
+.stat-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 6px; }
+
+/* ===== SECTIONS ===== */
+section { position: relative; z-index: 10; }
+.section-tag {
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--red); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-tag::before {
+  content: ''; display: block;
+  width: 24px; height: 2px; background: var(--red);
+}
+.section-title {
+  font-family: var(--font-heading);
+  font-size: clamp(40px, 6vw, 72px);
+  line-height: 1; letter-spacing: 0.03em;
+  margin-bottom: 20px;
+}
+.section-sub { font-size: 16px; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+/* ===== DIFERENCIAL ===== */
+#diferencial { padding: 120px 40px; }
+.diferencial-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 24px; margin-top: 64px;
+}
+.dif-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 40px 32px;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  position: relative; overflow: hidden;
+}
+.dif-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  transform: scaleX(0); transition: transform 0.4s;
+}
+.dif-card:hover::before { transform: scaleX(1); }
+.dif-card:hover {
+  border-color: rgba(230,32,32,0.3);
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(230,32,32,0.1);
+}
+.dif-icon {
+  width: 56px; height: 56px;
+  background: rgba(230,32,32,0.1);
+  border: 1px solid rgba(230,32,32,0.2);
+  border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px; margin-bottom: 28px;
+}
+.dif-title {
+  font-family: var(--font-heading);
+  font-size: 26px; letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+.dif-text { font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ===== GALLERY ===== */
+#galeria { padding: 80px 40px; background: var(--bg2); }
+.gallery-header { max-width: 1200px; margin: 0 auto 48px; }
+.gallery-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 240px 240px;
+  gap: 16px;
+}
+.gallery-item {
+  border-radius: 16px; overflow: hidden;
+  position: relative; cursor: pointer;
+}
+.gallery-item:first-child { grid-row: 1 / 3; }
+.gallery-item img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+  filter: grayscale(20%);
+}
+.gallery-item:hover img { transform: scale(1.08); filter: grayscale(0%) brightness(1.1); }
+.gallery-item::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.gallery-item:hover::after { opacity: 1; }
+.gallery-zoom {
+  position: absolute; bottom: 16px; right: 16px; z-index: 2;
+  width: 40px; height: 40px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity 0.3s; font-size: 14px;
+}
+.gallery-item:hover .gallery-zoom { opacity: 1; }
+
+/* ===== PLANES ===== */
+#planes { padding: 120px 40px; }
+.planes-header { max-width: 1200px; margin: 0 auto 64px; text-align: center; }
+.planes-grid {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 20px; align-items: start;
+}
+.plan-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 36px 28px;
+  transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+  position: relative;
+}
+.plan-card.featured {
+  background: linear-gradient(180deg, rgba(230,32,32,0.08) 0%, var(--card) 100%);
+  border-color: rgba(230,32,32,0.4);
+  transform: scale(1.04);
+  box-shadow: 0 0 80px rgba(230,32,32,0.15), 0 30px 60px rgba(0,0,0,0.3);
+}
+.plan-card:not(.featured):hover {
+  border-color: rgba(255,255,255,0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.plan-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--red); color: white;
+  padding: 5px 16px; border-radius: 100px;
+  font-size: 11px; font-weight: 800;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  white-space: nowrap;
+}
+.plan-name {
+  font-family: var(--font-heading);
+  font-size: 20px; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.plan-price {
+  font-family: var(--font-heading);
+  font-size: 64px; line-height: 1; letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.plan-price sup { font-size: 28px; vertical-align: super; }
+.plan-period { font-size: 12px; color: var(--muted); margin-bottom: 28px; font-weight: 500; }
+.plan-features { list-style: none; margin-bottom: 32px; display: flex; flex-direction: column; gap: 12px; }
+.plan-features li {
+  font-size: 13px; color: #ccc;
+  display: flex; align-items: center; gap: 10px;
+}
+.plan-features li::before {
+  content: '✓'; color: var(--red); font-weight: 900; font-size: 12px;
+  flex-shrink: 0;
+}
+.plan-features li.no::before { content: '×'; color: rgba(255,255,255,0.2); }
+.plan-features li.no { color: rgba(255,255,255,0.25); text-decoration: line-through; }
+.plan-btn {
+  width: 100%; padding: 14px;
+  border-radius: 10px; font-size: 13px;
+  font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; cursor: pointer;
+  border: 2px solid; transition: all 0.3s;
+  text-decoration: none; display: block; text-align: center;
+}
+.plan-btn.primary {
+  background: var(--red); border-color: var(--red); color: white;
+}
+.plan-btn.primary:hover { background: var(--red-dark); transform: translateY(-2px); box-shadow: 0 10px 30px rgba(230,32,32,0.4); }
+.plan-btn.outline { background: transparent; border-color: rgba(255,255,255,0.15); color: white; }
+.plan-btn.outline:hover { border-color: var(--red); color: var(--red); transform: translateY(-2px); }
+
+/* ===== PARALLAX CALLOUT ===== */
+#callout {
+  position: relative; padding: 120px 40px; overflow: hidden;
+  text-align: center;
+}
+.callout-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1920&q=80&fit=crop');
+  background-size: cover; background-position: center;
+  opacity: 0.12;
+}
+.callout-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, var(--bg) 0%, transparent 30%, transparent 70%, var(--bg) 100%);
+}
+.callout-content { position: relative; z-index: 10; max-width: 800px; margin: 0 auto; }
+.callout-title {
+  font-family: var(--font-heading);
+  font-size: clamp(50px, 8vw, 100px);
+  line-height: 1; letter-spacing: 0.02em; margin-bottom: 24px;
+}
+.callout-text { font-size: 17px; color: var(--muted); max-width: 500px; margin: 0 auto 40px; line-height: 1.7; }
+
+/* ===== TESTIMONIOS ===== */
+#testimonios { padding: 120px 40px; background: var(--bg2); }
+.testimonios-grid {
+  max-width: 1100px; margin: 64px auto 0;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+}
+.test-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px; padding: 36px;
+  position: relative; transition: all 0.3s;
+}
+.test-card:hover {
+  border-color: rgba(230,32,32,0.2);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+}
+.test-quote {
+  font-size: 42px; line-height: 1;
+  color: var(--red); font-family: Georgia, serif;
+  margin-bottom: 20px;
+}
+.test-text {
+  font-size: 15px; color: #ccc; line-height: 1.75;
+  margin-bottom: 28px; font-style: italic;
+}
+.test-stars { color: #fbbf24; font-size: 13px; margin-bottom: 20px; letter-spacing: 2px; }
+.test-person { display: flex; align-items: center; gap: 14px; }
+.test-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), #ff6b6b);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 16px; color: white;
+  flex-shrink: 0;
+}
+.test-name { font-weight: 700; font-size: 14px; }
+.test-role { font-size: 12px; color: var(--muted); }
+
+/* ===== FAQ ===== */
+#faq { padding: 120px 40px; }
+.faq-wrap { max-width: 740px; margin: 64px auto 0; display: flex; flex-direction: column; gap: 12px; }
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+  transition: border-color 0.3s;
+}
+.faq-item.open { border-color: rgba(230,32,32,0.3); }
+.faq-q {
+  width: 100%; padding: 22px 28px;
+  background: none; border: none; color: white;
+  font-family: var(--font-body); font-size: 15px; font-weight: 600;
+  text-align: left; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  transition: color 0.3s;
+}
+.faq-q:hover { color: var(--red); }
+.faq-chevron {
+  width: 28px; height: 28px; flex-shrink: 0;
+  background: rgba(255,255,255,0.05); border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; transition: all 0.3s;
+}
+.faq-item.open .faq-chevron { background: rgba(230,32,32,0.15); color: var(--red); transform: rotate(180deg); }
+.faq-a { max-height: 0; overflow: hidden; transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1); }
+.faq-a-inner { padding: 0 28px 22px; font-size: 14px; color: var(--muted); line-height: 1.7; }
+
+/* ===== LEAD FORM ===== */
+#inscripcion { padding: 120px 40px; background: var(--bg2); }
+.form-wrap {
+  max-width: 1100px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+}
+.form-info {}
+.form-info .section-title { margin-bottom: 24px; }
+.form-perks { display: flex; flex-direction: column; gap: 16px; margin-top: 36px; }
+.form-perk {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 14px; color: #ccc;
+}
+.form-perk-icon {
+  width: 36px; height: 36px; flex-shrink: 0;
+  background: rgba(230,32,32,0.1); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.lead-form {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 24px; padding: 48px;
+}
+.lead-form h3 {
+  font-family: var(--font-heading);
+  font-size: 36px; letter-spacing: 0.05em; margin-bottom: 8px;
+}
+.lead-form p { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+.form-group { margin-bottom: 18px; }
+.form-group label { display: block; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.form-group input, .form-group select {
+  width: 100%; padding: 14px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border); border-radius: 10px;
+  color: white; font-family: var(--font-body); font-size: 14px;
+  outline: none; transition: border-color 0.3s, box-shadow 0.3s;
+  appearance: none;
+}
+.form-group input:focus, .form-group select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(230,32,32,0.1);
+}
+.form-group select option { background: var(--card2); }
+.form-submit {
+  width: 100%; padding: 16px;
+  background: var(--red); border: none; border-radius: 10px;
+  color: white; font-family: var(--font-body);
+  font-size: 14px; font-weight: 800;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  cursor: pointer; transition: all 0.3s;
+  margin-top: 8px;
+  box-shadow: 0 0 40px rgba(230,32,32,0.3);
+}
+.form-submit:hover {
+  background: var(--red-dark); transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(230,32,32,0.5);
+}
+.form-legal { font-size: 11px; color: rgba(255,255,255,0.25); text-align: center; margin-top: 14px; line-height: 1.5; }
+
+/* ===== UBICACION ===== */
+#ubicacion { padding: 120px 40px; }
+.ubicacion-grid {
+  max-width: 1100px; margin: 64px auto 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+}
+.ubi-info { display: flex; flex-direction: column; gap: 28px; }
+.ubi-item { display: flex; gap: 18px; align-items: flex-start; }
+.ubi-icon {
+  width: 46px; height: 46px; flex-shrink: 0;
+  background: rgba(230,32,32,0.1); border: 1px solid rgba(230,32,32,0.2);
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  color: var(--red); font-size: 18px;
+}
+.ubi-label { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.ubi-value { font-size: 15px; color: white; font-weight: 500; }
+.map-container {
+  border-radius: 20px; overflow: hidden;
+  border: 1px solid var(--border); height: 380px;
+}
+.map-container iframe { width: 100%; height: 100%; border: none; filter: grayscale(30%) invert(90%) hue-rotate(180deg); }
+
+/* ===== FINAL CTA ===== */
+#final-cta {
+  padding: 160px 40px; text-align: center; position: relative; overflow: hidden;
+}
+.final-cta-bg {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, rgba(230,32,32,0.12) 0%, transparent 70%);
+}
+.final-cta-grid {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(90deg, transparent, transparent 80px, rgba(255,255,255,0.012) 80px, rgba(255,255,255,0.012) 81px),
+    repeating-linear-gradient(0deg, transparent, transparent 80px, rgba(255,255,255,0.012) 80px, rgba(255,255,255,0.012) 81px);
+}
+.final-cta-content { position: relative; z-index: 10; max-width: 700px; margin: 0 auto; }
+.final-cta-title {
+  font-family: var(--font-heading);
+  font-size: clamp(56px, 9vw, 100px); line-height: 1; letter-spacing: 0.02em; margin-bottom: 24px;
+}
+.final-cta-text { font-size: 17px; color: var(--muted); margin-bottom: 48px; line-height: 1.7; }
+.trust-badges { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 40px; }
+.trust-badge {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--muted); font-weight: 600;
+}
+.trust-badge i { color: var(--red); }
+
+/* ===== FOOTER ===== */
+footer {
+  background: #000;
+  border-top: 1px solid var(--border);
+  padding: 64px 40px 40px;
+}
+.footer-grid {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 48px; margin-bottom: 48px;
+}
+.footer-brand .logo {
+  font-family: var(--font-heading);
+  font-size: 32px; letter-spacing: 0.08em; margin-bottom: 16px;
+}
+.footer-brand .logo span { color: var(--red); }
+.footer-brand p { font-size: 13px; color: var(--muted); line-height: 1.7; max-width: 280px; }
+.footer-col h4 {
+  font-size: 11px; font-weight: 800; letter-spacing: 0.15em;
+  text-transform: uppercase; color: white; margin-bottom: 20px;
+}
+.footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-col a { font-size: 13px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-col a:hover { color: white; }
+.footer-bottom {
+  max-width: 1200px; margin: 0 auto;
+  border-top: 1px solid var(--border); padding-top: 28px;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 12px; color: var(--muted);
+}
+.social-links { display: flex; gap: 12px; }
+.social-link {
+  width: 36px; height: 36px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border); border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--muted); font-size: 14px;
+  text-decoration: none; transition: all 0.3s;
+}
+.social-link:hover { background: rgba(230,32,32,0.15); border-color: rgba(230,32,32,0.4); color: var(--red); }
+
+/* ===== WHATSAPP FLOAT ===== */
+.wa-float {
+  position: fixed; bottom: 28px; right: 28px; z-index: 200;
+  width: 58px; height: 58px;
+  background: #25d366;
+  border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none; font-size: 26px; color: white;
+  box-shadow: 0 8px 30px rgba(37,211,102,0.4);
+  transition: all 0.3s;
+}
+.wa-float:hover { transform: scale(1.1) rotate(5deg); box-shadow: 0 12px 40px rgba(37,211,102,0.6); }
+
+/* ===== LIGHTBOX ===== */
+#lightbox {
+  display: none; position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.92); backdrop-filter: blur(10px);
+  align-items: center; justify-content: center;
+}
+#lightbox.show { display: flex; }
+#lightbox img { max-width: 90vw; max-height: 85vh; border-radius: 12px; object-fit: contain; }
+#lightbox-close {
+  position: absolute; top: 24px; right: 28px;
+  font-size: 28px; cursor: pointer; color: white; line-height: 1;
+  background: rgba(255,255,255,0.1); width: 44px; height: 44px;
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s;
+}
+#lightbox-close:hover { background: rgba(230,32,32,0.4); }
+
+/* ===== MOBILE ===== */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links, .nav-cta { display: none; }
+  .nav-mobile-btn { display: block; }
+  #hero { padding: 100px 20px 60px; }
+  .stats-bar { flex-wrap: wrap; padding: 28px 20px; gap: 20px; }
+  .stat-item { min-width: 40%; border-right: none; }
+  #diferencial { padding: 80px 20px; }
+  .diferencial-grid { grid-template-columns: 1fr 1fr; }
+  .gallery-grid { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+  .gallery-item:first-child { grid-row: auto; }
+  #planes { padding: 80px 20px; }
+  .planes-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+  .plan-card.featured { transform: none; }
+  .testimonios-grid { grid-template-columns: 1fr; }
+  #inscripcion { padding: 80px 20px; }
+  .form-wrap { grid-template-columns: 1fr; gap: 40px; }
+  .ubicacion-grid { grid-template-columns: 1fr; gap: 40px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  .footer-bottom { flex-direction: column; gap: 16px; }
+  #callout { padding: 80px 20px; }
+  #final-cta { padding: 100px 20px; }
+  #faq { padding: 80px 20px; }
+  #testimonios { padding: 80px 20px; }
+  #ubicacion { padding: 80px 20px; }
+  .lead-form { padding: 32px 24px; }
+}
+@media (max-width: 540px) {
+  .diferencial-grid { grid-template-columns: 1fr; }
+  .planes-grid { grid-template-columns: 1fr; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== UTILS ===== */
+.text-red { color: var(--red); }
+.text-center { text-align: center; }
+.container { max-width: 1200px; margin: 0 auto; }
+.opacity-0 { opacity: 0; }
+.reveal { opacity: 0; transform: translateY(40px); }
+.reveal.visible { opacity: 1; transform: translateY(0); transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+
+/* Stagger children */
+.stagger > * { opacity: 0; transform: translateY(32px); }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-follower" id="cursor-follower"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="logo-load">BODY TRAINER</div>
+  <div class="bar-wrap"><div class="bar-fill"></div></div>
+</div>
+
+<!-- PARTICLES -->
+<canvas id="particles"></canvas>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <div id="lightbox-close">×</div>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">💪 BODY <span>TRAINER</span></a>
+  <ul class="nav-links">
+    <li><a href="#diferencial">Nosotros</a></li>
+    <li><a href="#planes">Planes</a></li>
+    <li><a href="#galeria">Galería</a></li>
+    <li><a href="#ubicacion">Ubicación</a></li>
+  </ul>
+  <a href="#inscripcion" class="nav-cta">Inscribirse</a>
+  <button class="nav-mobile-btn" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-image-bg"></div>
+  <div class="hero-bg"></div>
+  <div class="hero-lines"></div>
+  <div class="hero-content">
+    <div class="hero-badge">⚡ Arboledas · Acceso 24/7</div>
+    <h1 class="hero-h1" id="hero-title">
+      <span class="line1">LOS MÁS VIP</span>
+      <span class="line2">DEL FITNESS</span>
+    </h1>
+    <p class="hero-sub">
+      No más contratos que te atrapan. No más equipamiento viejo.<br>
+      <strong>Entrena cuando quieras. Paga solo lo que usas.</strong>
+    </p>
+    <div class="hero-btns">
+      <a href="#inscripcion" class="btn-glow">Prueba Gratis →</a>
+      <a href="#planes" class="btn-ghost">Ver Planes</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <i class="fas fa-chevron-down"></i>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number" data-target="500">0</div>
+    <div class="stat-label">Miembros activos</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="24">0</div>
+    <div class="stat-label">Horas de acceso</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="98">0</div>
+    <div class="stat-label">% Satisfacción</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number" data-target="3">0</div>
+    <div class="stat-label">Años en Arboledas</div>
+  </div>
+</div>
+
+<!-- DIFERENCIAL -->
+<section id="diferencial">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Por qué elegirnos</div>
+      <h2 class="section-title">No Somos<br>Un Gym Más</h2>
+      <p class="section-sub">Mientras otros te atrapan con contratos, nosotros te damos libertad total. Tu entrenamiento. Tus reglas.</p>
+    </div>
+    <div class="diferencial-grid stagger">
+      <div class="dif-card">
+        <div class="dif-icon">⚙️</div>
+        <div class="dif-title">Equipamiento Top</div>
+        <p class="dif-text">Maquinas de última generación. Mantenimiento semanal. Siempre en perfecto estado para que tu rendimiento nunca se detenga.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon">👑</div>
+        <div class="dif-title">Ambiente VIP</div>
+        <p class="dif-text">Más que un gym, es un club. Ambiente premium, limpieza impecable, música que te motiva y gente seria que va a entrenar.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon">🕐</div>
+        <div class="dif-title">Acceso 24/7</div>
+        <p class="dif-text">¿5am? ¿Midnight? No importa. Las puertas siempre abiertas para ti. Entrena cuando tu cuerpo lo pida, no cuando el gym diga.</p>
+      </div>
+      <div class="dif-card">
+        <div class="dif-icon">🎯</div>
+        <div class="dif-title">Sin Contratos</div>
+        <p class="dif-text">Paga lo que uses. Day pass, semanal o mensual. Sin clausulas, sin penalizaciones, sin sorpresas. Flexibilidad total.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section id="galeria">
+  <div class="gallery-header reveal">
+    <div class="section-tag">El espacio</div>
+    <h2 class="section-title">Así Se Ve<br>El Éxito</h2>
+  </div>
+  <div class="gallery-grid container">
+    <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1400&q=90&fit=crop')">
+      <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80&fit=crop" alt="Área de pesas Body Trainer" loading="lazy">
+      <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1400&q=90&fit=crop')">
+      <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=800&q=80&fit=crop" alt="Cardio area Body Trainer" loading="lazy">
+      <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=1400&q=90&fit=crop')">
+      <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=800&q=80&fit=crop" alt="Maquinas Body Trainer" loading="lazy">
+      <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=1400&q=90&fit=crop')">
+      <img src="https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=800&q=80&fit=crop" alt="Interior gimnasio" loading="lazy">
+      <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+    <div class="gallery-item" onclick="openLightbox('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1400&q=90&fit=crop')">
+      <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&q=80&fit=crop" alt="Entrenamiento Body Trainer" loading="lazy">
+      <div class="gallery-zoom"><i class="fas fa-expand"></i></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANES -->
+<section id="planes">
+  <div class="planes-header reveal">
+    <div class="section-tag">Precios 2026</div>
+    <h2 class="section-title">Planes Sin<br>Sorpresas</h2>
+    <p class="section-sub" style="margin:0 auto">Precio claro, acceso inmediato. Elige cuánto quieres comprometerte.</p>
+  </div>
+  <div class="planes-grid stagger">
+
+    <!-- Day -->
+    <div class="plan-card">
+      <div class="plan-name">Day Pass</div>
+      <div class="plan-price"><sup>$</sup>90</div>
+      <div class="plan-period">por día</div>
+      <ul class="plan-features">
+        <li>Acceso completo 1 día</li>
+        <li>Todas las máquinas</li>
+        <li>Sin reservación previa</li>
+        <li class="no">Casillero asignado</li>
+        <li class="no">Evaluación física</li>
+      </ul>
+      <a href="https://wa.me/525532652927?text=Quiero%20Day%20Pass%20%2490%20Body%20Trainer" class="plan-btn outline" target="_blank">Quiero Hoy</a>
+    </div>
+
+    <!-- Weekly -->
+    <div class="plan-card">
+      <div class="plan-name">Semanal</div>
+      <div class="plan-price"><sup>$</sup>220</div>
+      <div class="plan-period">por 7 días</div>
+      <ul class="plan-features">
+        <li>Acceso 7 días completos</li>
+        <li>Todas las máquinas</li>
+        <li>Casillero disponible</li>
+        <li>Acceso 24/7</li>
+        <li class="no">Evaluación física</li>
+      </ul>
+      <a href="https://wa.me/525532652927?text=Quiero%20Plan%20Semanal%20%24220%20Body%20Trainer" class="plan-btn outline" target="_blank">Elegir Semanal</a>
+    </div>
+
+    <!-- Monthly FEATURED -->
+    <div class="plan-card featured">
+      <div class="plan-badge">⭐ Más Popular</div>
+      <div class="plan-name">Mensual</div>
+      <div class="plan-price"><sup>$</sup>699</div>
+      <div class="plan-period">por 30 días</div>
+      <ul class="plan-features">
+        <li>Acceso ilimitado 30 días</li>
+        <li>Todas las máquinas</li>
+        <li>Casillero asignado</li>
+        <li>Acceso 24/7 garantizado</li>
+        <li>Evaluación física gratis</li>
+      </ul>
+      <a href="https://wa.me/525532652927?text=Quiero%20Plan%20Mensual%20%24699%20Body%20Trainer" class="plan-btn primary" target="_blank">Inscribirme Ahora</a>
+    </div>
+
+    <!-- Yearly -->
+    <div class="plan-card">
+      <div class="plan-name">Anual VIP</div>
+      <div class="plan-price"><sup>$</sup>5,999</div>
+      <div class="plan-period">por 365 días</div>
+      <ul class="plan-features">
+        <li>Acceso ilimitado 1 año</li>
+        <li>Todas las máquinas</li>
+        <li>Casillero VIP asignado</li>
+        <li>Acceso 24/7</li>
+        <li>Plan de entrenamiento</li>
+      </ul>
+      <a href="https://wa.me/525532652927?text=Quiero%20Plan%20Anual%20VIP%20%245999%20Body%20Trainer" class="plan-btn outline" target="_blank">Plan VIP</a>
+    </div>
+
+  </div>
+  <p style="text-align:center;margin-top:40px;font-size:13px;color:var(--muted)">Sin contratos · Sin penalizaciones · Activación inmediata</p>
+</section>
+
+<!-- PARALLAX CALLOUT -->
+<section id="callout">
+  <div class="callout-bg"></div>
+  <div class="callout-overlay"></div>
+  <div class="callout-content reveal">
+    <h2 class="callout-title">¿Cuándo<br><span style="color:var(--red)">Empiezas?</span></h2>
+    <p class="callout-text">El único mal entrenamiento es el que no hiciste. Tu versión más fuerte te está esperando. La pregunta es: ¿cuándo vas a por ella?</p>
+    <a href="#inscripcion" class="btn-glow">Empezar Ahora →</a>
+  </div>
+</section>
+
+<!-- TESTIMONIOS -->
+<section id="testimonios">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Testimonios</div>
+      <h2 class="section-title">Lo Dicen<br>Ellos</h2>
+    </div>
+    <div class="testimonios-grid stagger">
+      <div class="test-card">
+        <div class="test-quote">"</div>
+        <p class="test-text">Llevaba años buscando un gym donde no te aten con contratos. Body Trainer cambió mi rutina completamente. Voy a las 6am sin problema y el equipamiento siempre está perfecto.</p>
+        <div class="test-stars">★★★★★</div>
+        <div class="test-person">
+          <div class="test-avatar">MR</div>
+          <div>
+            <div class="test-name">Miguel Ramírez</div>
+            <div class="test-role">Miembro desde 2025 · Plan Mensual</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-quote">"</div>
+        <p class="test-text">El ambiente es completamente diferente a otros gyms. La gente va a entrenar en serio, las máquinas funcionan, está limpio. Vale cada peso del mensual.</p>
+        <div class="test-stars">★★★★★</div>
+        <div class="test-person">
+          <div class="test-avatar">AL</div>
+          <div>
+            <div class="test-name">Andrea López</div>
+            <div class="test-role">Miembro desde 2024 · Plan Anual VIP</div>
+          </div>
+        </div>
+      </div>
+      <div class="test-card">
+        <div class="test-quote">"</div>
+        <p class="test-text">Pruebo el day pass cuando viajo o trabajo cerca y es perfecta la opción. Sin complicaciones, sin contratos. Solo entrenamiento. Eso es lo que necesitaba.</p>
+        <div class="test-stars">★★★★★</div>
+        <div class="test-person">
+          <div class="test-avatar">JM</div>
+          <div>
+            <div class="test-name">José Mendoza</div>
+            <div class="test-role">Cliente frecuente · Day Pass</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="reveal text-center">
+      <div class="section-tag" style="justify-content:center">Dudas frecuentes</div>
+      <h2 class="section-title">Preguntas</h2>
+    </div>
+    <div class="faq-wrap">
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Puedo cambiar de plan en cualquier momento?
+          <span class="faq-chevron"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Sí, totalmente. No hay penalizaciones ni contratos. Si tienes un day pass y quieres subir a mensual ese mismo día, lo hacemos sin problema. La flexibilidad es parte de nuestra propuesta.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿El acceso 24/7 incluye fines de semana y festivos?
+          <span class="faq-chevron"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Sí. 365 días al año, 24 horas. No cerramos en festivos, no cerramos en diciembre, no cerramos en vacaciones. Si tienes membresía activa, tienes acceso. Así de simple.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Qué equipamiento tienen disponible?
+          <span class="faq-chevron"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Área de pesas libre, máquinas de musculación, cardio (caminadoras, bicicletas, elípticas), zona funcional, pesas rusas, battle ropes y área de estiramiento. Todo con mantenimiento semanal.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Hay contratos o mensualidades forzosas?
+          <span class="faq-chevron"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">No. Nunca. Es uno de nuestros principios fundamentales. Pagas solo el período que elegiste y cuando se termine, decides si renuevas o no. Sin cargos automáticos, sin penalizaciones.</div>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ¿Cómo activo mi membresía?
+          <span class="faq-chevron"><i class="fas fa-chevron-down"></i></span>
+        </button>
+        <div class="faq-a">
+          <div class="faq-a-inner">Manda WhatsApp al 55 3265-2927 con el plan que quieres, realizas tu pago y en menos de 15 minutos tienes tu acceso activado. Puedes venir el mismo día. Sin citas, sin papelería.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INSCRIPCION FORM -->
+<section id="inscripcion">
+  <div class="form-wrap container">
+    <div class="form-info reveal">
+      <div class="section-tag">Únete ahora</div>
+      <h2 class="section-title">Empieza<br>Hoy Mismo</h2>
+      <p class="section-sub">Completa el formulario y te contactamos en minutos para activar tu acceso.</p>
+      <div class="form-perks">
+        <div class="form-perk">
+          <div class="form-perk-icon">⚡</div>
+          <span>Activación en menos de 15 minutos</span>
+        </div>
+        <div class="form-perk">
+          <div class="form-perk-icon">🔒</div>
+          <span>Sin contratos ni compromisos</span>
+        </div>
+        <div class="form-perk">
+          <div class="form-perk-icon">💬</div>
+          <span>Atención personalizada por WhatsApp</span>
+        </div>
+        <div class="form-perk">
+          <div class="form-perk-icon">✅</div>
+          <span>Primer día con asesoría gratuita</span>
+        </div>
+      </div>
+    </div>
+    <div class="lead-form reveal">
+      <h3>Inscríbete Gratis</h3>
+      <p>Sin compromiso · Sin tarjeta requerida</p>
+      <form id="leadForm" onsubmit="submitForm(event)">
+        <div class="form-group">
+          <label>Nombre completo</label>
+          <input type="text" id="fname" placeholder="Tu nombre" required>
+        </div>
+        <div class="form-group">
+          <label>WhatsApp</label>
+          <input type="tel" id="fphone" placeholder="55 1234 5678" required>
+        </div>
+        <div class="form-group">
+          <label>Plan de interés</label>
+          <select id="fplan" required>
+            <option value="">Selecciona un plan</option>
+            <option value="Day Pass $90">Day Pass — $90</option>
+            <option value="Semanal $220">Semanal — $220</option>
+            <option value="Mensual $699">Mensual — $699 ⭐</option>
+            <option value="Anual VIP $5999">Anual VIP — $5,999</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>¿Cuándo quieres empezar?</label>
+          <select id="fstart">
+            <option value="Hoy mismo">Hoy mismo</option>
+            <option value="Esta semana">Esta semana</option>
+            <option value="El próximo mes">El próximo mes</option>
+          </select>
+        </div>
+        <button type="submit" class="form-submit">Quiero Mi Acceso →</button>
+        <p class="form-legal">Al enviar, aceptas que te contactemos por WhatsApp. Sin spam, solo tu acceso.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- UBICACION -->
+<section id="ubicacion">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-tag">Visítanos</div>
+      <h2 class="section-title">Encuéntranos</h2>
+    </div>
+    <div class="ubicacion-grid">
+      <div class="ubi-info">
+        <div class="ubi-item">
+          <div class="ubi-icon"><i class="fas fa-map-marker-alt"></i></div>
+          <div>
+            <div class="ubi-label">Dirección</div>
+            <div class="ubi-value">Calzada de los Jinetes 35<br>Las Arboledas, Atizapán</div>
+          </div>
+        </div>
+        <div class="ubi-item">
+          <div class="ubi-icon"><i class="fas fa-clock"></i></div>
+          <div>
+            <div class="ubi-label">Horario</div>
+            <div class="ubi-value">24 horas · 365 días al año</div>
+          </div>
+        </div>
+        <div class="ubi-item">
+          <div class="ubi-icon"><i class="fab fa-whatsapp"></i></div>
+          <div>
+            <div class="ubi-label">WhatsApp</div>
+            <div class="ubi-value"><a href="https://wa.me/525532652927" style="color:white;text-decoration:none">55 3265-2927</a></div>
+          </div>
+        </div>
+        <div class="ubi-item">
+          <div class="ubi-icon"><i class="fas fa-phone"></i></div>
+          <div>
+            <div class="ubi-label">Teléfono</div>
+            <div class="ubi-value"><a href="tel:5532652927" style="color:white;text-decoration:none">55 3265-2927</a></div>
+          </div>
+        </div>
+        <a href="https://wa.me/525532652927?text=Hola%20Body%20Trainer%2C%20quiero%20información" class="btn-glow" style="display:inline-flex;align-items:center;gap:10px;margin-top:8px" target="_blank">
+          <i class="fab fa-whatsapp"></i> Hablar por WhatsApp
+        </a>
+      </div>
+      <div class="map-container">
+        <iframe src="https://maps.google.com/maps?q=Body+Trainer+Jinetes+35+Arboledas&output=embed" loading="lazy" allowfullscreen title="Body Trainer en Google Maps"></iframe>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA -->
+<section id="final-cta">
+  <div class="final-cta-bg"></div>
+  <div class="final-cta-grid"></div>
+  <div class="final-cta-content reveal">
+    <h2 class="final-cta-title">¿Listo<br>Para <span style="color:var(--red)">Ser VIP?</span></h2>
+    <p class="final-cta-text">La diferencia entre quien quieres ser y quien eres se llama acción. Da ese primer paso hoy.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+      <a href="#inscripcion" class="btn-glow">Prueba Gratis →</a>
+      <a href="https://wa.me/525532652927?text=Hola%20Body%20Trainer%2C%20quiero%20inscribirme" class="btn-ghost" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    </div>
+    <div class="trust-badges">
+      <div class="trust-badge"><i class="fas fa-shield-alt"></i> Sin contratos</div>
+      <div class="trust-badge"><i class="fas fa-bolt"></i> Acceso 24/7</div>
+      <div class="trust-badge"><i class="fas fa-star"></i> +500 miembros</div>
+      <div class="trust-badge"><i class="fas fa-check-circle"></i> Activación inmediata</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">💪 BODY <span>TRAINER</span></div>
+      <p>El gimnasio más exclusivo de Arboledas. Acceso flexible 24/7, equipamiento premium, sin contratos.</p>
+      <div class="social-links" style="margin-top:20px">
+        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-facebook"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-tiktok"></i></a>
+        <a href="https://wa.me/525532652927" class="social-link"><i class="fab fa-whatsapp"></i></a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Planes</h4>
+      <ul>
+        <li><a href="#planes">Day Pass $90</a></li>
+        <li><a href="#planes">Semanal $220</a></li>
+        <li><a href="#planes">Mensual $699</a></li>
+        <li><a href="#planes">Anual VIP $5,999</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Gimnasio</h4>
+      <ul>
+        <li><a href="#diferencial">Nosotros</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#testimonios">Testimonios</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="https://wa.me/525532652927">WhatsApp</a></li>
+        <li><a href="tel:5532652927">55 3265-2927</a></li>
+        <li><a href="#ubicacion">Cómo llegar</a></li>
+        <li><a href="#inscripcion">Inscribirse</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Body Trainer Arboledas. Todos los derechos reservados.</span>
+    <span>Calzada de los Jinetes 35, Las Arboledas</span>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/525532652927?text=Hola%20Body%20Trainer%2C%20quiero%20información%20sobre%20los%20planes" class="wa-float" target="_blank" title="WhatsApp Body Trainer">
+  <i class="fab fa-whatsapp"></i>
+</a>
+
+<!-- SCHEMA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HealthClub",
+  "name": "Body Trainer",
+  "description": "Gimnasio premium en Arboledas. Acceso 24/7, sin contratos, equipamiento de élite.",
+  "url": "https://garallen2389-create.github.io/GYMS/generated/body-trainer-vip-premium.html",
+  "telephone": "+525532652927",
+  "openingHours": "Mo-Su 00:00-24:00",
+  "address": { "@type": "PostalAddress", "streetAddress": "Calzada de los Jinetes 35", "addressLocality": "Las Arboledas, Atizapán" },
+  "priceRange": "$90-$5999"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {"@type": "Question","name": "¿Hay contratos?","acceptedAnswer": {"@type": "Answer","text": "No. Sin contratos, sin penalizaciones. Pagas solo el período elegido."}},
+    {"@type": "Question","name": "¿Acceso 24/7?","acceptedAnswer": {"@type": "Answer","text": "Sí, 365 días al año, 24 horas. Sin excepciones."}}
+  ]
+}
+</script>
+
+<!-- SCRIPTS -->
+<script>
+// ===== LOADER =====
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    const loader = document.getElementById('loader');
+    loader.style.opacity = '0';
+    loader.style.transition = 'opacity 0.5s ease';
+    setTimeout(() => loader.style.display = 'none', 500);
+    initAll();
+  }, 1600);
+});
+
+function initAll() {
+  initCursor();
+  initParticles();
+  initNavbar();
+  initCounters();
+  initReveal();
+  initParallax();
+}
+
+// ===== CURSOR =====
+function initCursor() {
+  const cursor = document.getElementById('cursor');
+  const follower = document.getElementById('cursor-follower');
+  let mx = 0, my = 0, fx = 0, fy = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx - 6 + 'px';
+    cursor.style.top = my - 6 + 'px';
+  });
+
+  function animate() {
+    fx += (mx - fx) * 0.12;
+    fy += (my - fy) * 0.12;
+    follower.style.left = fx - 18 + 'px';
+    follower.style.top = fy - 18 + 'px';
+    requestAnimationFrame(animate);
+  }
+  animate();
+
+  document.querySelectorAll('a, button, .gallery-item, .dif-card, .plan-card, .faq-q').forEach(el => {
+    el.addEventListener('mouseenter', () => follower.classList.add('hovered'));
+    el.addEventListener('mouseleave', () => follower.classList.remove('hovered'));
+  });
+}
+
+// ===== PARTICLES =====
+function initParticles() {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W = window.innerWidth, H = window.innerHeight;
+  canvas.width = W; canvas.height = H;
+
+  const count = Math.floor((W * H) / 18000);
+  const dots = Array.from({length: count}, () => ({
+    x: Math.random() * W, y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.3,
+    vy: (Math.random() - 0.5) * 0.3,
+    r: Math.random() * 1.5 + 0.5,
+  }));
+
+  let mouse = {x: W/2, y: H/2};
+  document.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  window.addEventListener('resize', () => {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  });
+
+  function draw() {
+    ctx.clearRect(0,0,W,H);
+    for (let i = 0; i < dots.length; i++) {
+      const d = dots[i];
+      d.x += d.vx; d.y += d.vy;
+      if (d.x < 0) d.x = W; if (d.x > W) d.x = 0;
+      if (d.y < 0) d.y = H; if (d.y > H) d.y = 0;
+
+      // Draw dot
+      ctx.beginPath();
+      ctx.arc(d.x, d.y, d.r, 0, Math.PI*2);
+      ctx.fillStyle = 'rgba(255,255,255,0.25)';
+      ctx.fill();
+
+      // Connect nearby
+      for (let j = i+1; j < dots.length; j++) {
+        const d2 = dots[j];
+        const dist = Math.hypot(d.x-d2.x, d.y-d2.y);
+        if (dist < 120) {
+          ctx.beginPath();
+          ctx.moveTo(d.x, d.y); ctx.lineTo(d2.x, d2.y);
+          ctx.strokeStyle = `rgba(230,32,32,${0.08 * (1 - dist/120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ===== NAVBAR =====
+function initNavbar() {
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+}
+
+// ===== COUNTER ANIMATION =====
+function initCounters() {
+  const counters = document.querySelectorAll('[data-target]');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const el = e.target;
+      const target = +el.dataset.target;
+      const suffix = el.dataset.suffix || '';
+      let current = 0;
+      const step = target / 60;
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(timer); }
+        el.textContent = Math.floor(current).toLocaleString() + suffix;
+      }, 16);
+      obs.unobserve(el);
+    });
+  }, {threshold: 0.5});
+  counters.forEach(c => obs.observe(c));
+}
+
+// ===== SCROLL REVEAL =====
+function initReveal() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, {threshold: 0.15, rootMargin: '0px 0px -60px 0px'});
+
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Stagger children
+  const staggerObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const children = e.target.querySelectorAll(':scope > *');
+      children.forEach((child, i) => {
+        setTimeout(() => {
+          child.style.transition = 'opacity 0.7s ease, transform 0.7s cubic-bezier(0.16,1,0.3,1)';
+          child.style.opacity = '1';
+          child.style.transform = 'translateY(0)';
+        }, i * 120);
+      });
+      staggerObs.unobserve(e.target);
+    });
+  }, {threshold: 0.1, rootMargin: '0px 0px -40px 0px'});
+
+  document.querySelectorAll('.stagger').forEach(el => staggerObs.observe(el));
+}
+
+// ===== PARALLAX =====
+function initParallax() {
+  const heroBg = document.querySelector('.hero-image-bg');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (heroBg) heroBg.style.transform = `translateY(${y * 0.3}px)`;
+  }, {passive: true});
+}
+
+// ===== FAQ =====
+function toggleFaq(btn) {
+  const item = btn.parentElement;
+  const answer = item.querySelector('.faq-a');
+  const isOpen = item.classList.contains('open');
+
+  document.querySelectorAll('.faq-item.open').forEach(el => {
+    el.classList.remove('open');
+    el.querySelector('.faq-a').style.maxHeight = '0';
+  });
+
+  if (!isOpen) {
+    item.classList.add('open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+
+// ===== LIGHTBOX =====
+function openLightbox(src) {
+  const lb = document.getElementById('lightbox');
+  document.getElementById('lightbox-img').src = src;
+  lb.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+document.getElementById('lightbox-close').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow = '';
+});
+document.getElementById('lightbox').addEventListener('click', function(e) {
+  if (e.target === this) { this.classList.remove('show'); document.body.style.overflow = ''; }
+});
+
+// ===== LEAD FORM =====
+function submitForm(e) {
+  e.preventDefault();
+  const name = document.getElementById('fname').value;
+  const phone = document.getElementById('fphone').value;
+  const plan = document.getElementById('fplan').value;
+  const start = document.getElementById('fstart').value;
+  const msg = encodeURIComponent(
+    `Hola Body Trainer! Me llamo ${name}.\n\nQuiero el ${plan}.\nEmpezar: ${start}.\nTel: ${phone}`
+  );
+  window.open(`https://wa.me/525532652927?text=${msg}`, '_blank');
+  document.getElementById('leadForm').reset();
+  const btn = document.querySelector('.form-submit');
+  btn.textContent = '✓ Enviando a WhatsApp...';
+  setTimeout(() => btn.textContent = 'Quiero Mi Acceso →', 3000);
+}
+
+// ===== MOBILE MENU =====
+function toggleMobileMenu() {
+  alert('Menú móvil: Llámanos al 55 3265-2927 o escríbenos por WhatsApp');
+}
+</script>
+</body>
+</html>
